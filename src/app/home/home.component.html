@@ -1,1 +1,38 @@
-<p>home works!</p>
+<!-- <div><app-navbar></app-navbar> </div> -->
+ <div class="top"> </div>
+   <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" opened class="sidenav">
+      <mat-nav-list>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Menu
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item routerLink="add-inventory">Add Inventory</mat-list-item>
+            <mat-list-item routerLink="issue">Issue Material</mat-list-item>
+            <mat-list-item routerLink="issue">Receive Material</mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content class="sidenav-content">
+      <mat-toolbar color="primary">
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Home Page</span>
+         <!-- Right-aligned content -->
+      <span class="spacer"></span>
+      <span>Session Time: {{ sessionTime}}</span>
+      <button mat-button (click)="logout()">Logout</button>
+        </mat-toolbar>
+  
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

@@ -14,6 +14,21 @@ export interface login{
     password:string
 }
 
+export interface invntoryItem{
+    name:string ,
+    make: string,
+    model: string,
+    category: string,
+    poNumber: string,
+    receipt_date: string,
+    warranty_expiration: string,
+    serial_number: string, // Updated form control for multiple serial numbers
+    status: string,
+    location:string,
+    assigned_to:string,
+    notes: string,
+    sub_category:string
+}
 // export interface product{
 //     id:string
 //     name:string,

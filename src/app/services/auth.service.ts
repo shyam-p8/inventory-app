@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject, interval } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private router: Router) {}
+
+  private sessionTime = new BehaviorSubject<number>(0);
+  sessionTime$ = this.sessionTime.asObservable();
+
+  constructor(private router: Router) {
+    this.startSessionTimer();
+  }
 
   // Method to check if the token is expired
   isTokenExpired(): boolean {
@@ -28,5 +35,30 @@ export class AuthService {
     if (this.isTokenExpired()) {
       this.logout();
     }
+  }
+
+  
+
+  // Method to calculate remaining session time
+  private calculateRemainingTime(): number {
+    const sessionEnd = sessionStorage.getItem('session_end');
+    const currentTime = new Date().getTime();
+    return sessionEnd ? +sessionEnd - currentTime : 0;
+  }
+
+  // Start a timer to update session time periodically
+  private startSessionTimer(): void {
+    interval(1000).subscribe(() => {
+      const remainingTime = this.calculateRemainingTime();
+      if (remainingTime > 0) {
+        this.sessionTime.next(remainingTime);
+      } else {
+        this.sessionTime.next(0);
+      }
+    });
+  }
+
+   getAccessToken(){
+    return sessionStorage.getItem('token');
   }
 }

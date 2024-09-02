@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/internal/Observable';
 })
 export class UserService {
 
-  private apiUrl = 'http://localhost:8081/rebilling/login';
+  private apiUrl = 'http://10.98.7.218:8000/user/login/';
   constructor(private http: HttpClient, private route: Router) { }
 
 

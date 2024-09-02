@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css']
 })
-export class HomeComponent  implements OnInit{
- 
+export class NavbarComponent implements OnInit {
+
+  constructor(private authService : AuthService){ }
   sessionTime: string = '';
 
-  constructor(private authService:AuthService){
-    
-  }
+ 
+
   ngOnInit(): void {
     this.authService.sessionTime$.subscribe((remainingTime) => {
       this.sessionTime = this.formatTime(remainingTime);
@@ -30,13 +30,10 @@ export class HomeComponent  implements OnInit{
     return value < 10 ? '0' + value : value.toString();
   }
 
+  logout(){
 
+    this.authService.logout();
 
-  //* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-logout(){
-  this.authService.logout();
-}
-
+  }
 
 }
-

@@ -19,31 +19,22 @@ export class LoginComponent {
 
   onLogin(data: login) {
 
-
-const token = 'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJBTVJDRUxMIiwidXNlciI6IkFNUkNFTEwiLCJyb2xlIjoiQU1SQ0VMTCIsInN0YXR1cyI6ImFjdGl2ZSIsImlhdCI6MTcyNTEwODI0OCwiZXhwIjoxNzI1MTExODQ4fQ.mws7XOFFmRVbmFDoLHOJ-H4FL8NWM6yMlora4GsaYaGkCkehFssiNFqH8MuGDVto';
-
-try {
-  const decodedToken = jwtDecode(token);
-  console.log('Decoded Token:', decodedToken);
-} catch (error) {
-  console.error('Error decoding token:', error);
-}
-
     this.userService.userLogin(data).subscribe({
       next: (result: any) => {
         //console.warn(result.accessToken);
-        if (result && result.accessToken) {
+        if (result && result.access) {
           // Decode the JWT token to get role and expiration time
-          const decodedToken: any = jwtDecode(result.accessToken);
+          const decodedToken: any = jwtDecode(result.access);
   
+          console.warn(decodedToken);
           // Extract role and expiration time (exp) from the token
           const role = decodedToken.role;
           const sessionEnd = decodedToken.exp * 1000; // Convert to milliseconds
   
           // Store the token, role, and username in session storage
-          sessionStorage.setItem('token', result.accessToken);
+          sessionStorage.setItem('token', result.access);
           sessionStorage.setItem('role', role);
-          sessionStorage.setItem('username', decodedToken.sub); // Assuming username is stored in 'sub'
+          sessionStorage.setItem('username', decodedToken.username); // Assuming username is stored in 'sub'
           sessionStorage.setItem('session_end', sessionEnd.toString());
   
           console.log('Login successful');
