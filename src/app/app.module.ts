@@ -15,7 +15,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AddInventoryComponent } from './add-inventory/add-inventory.component';
-import { IssueComponent } from './issue/issue.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,15 +23,18 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { EditInventoryComponent } from './edit-inventory/edit-inventory.component';
+import { IssueInventoryComponent } from './issue-inventory/issue-inventory.component';
 
 @NgModule({
-  declarations: [
+  declarations:[
     AppComponent,
     LoginComponent,
     HomeComponent,
     NavbarComponent,
     AddInventoryComponent,
-    IssueComponent 
+    EditInventoryComponent,
+    IssueInventoryComponent 
   ],
   
   imports: [

@@ -19,7 +19,7 @@ export interface invntoryItem{
     make: string,
     model: string,
     category: string,
-    poNumber: string,
+    order_id: number, //This is PO number id of po table
     receipt_date: string,
     warranty_expiration: string,
     serial_number: string, // Updated form control for multiple serial numbers

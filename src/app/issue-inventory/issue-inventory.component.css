@@ -1,0 +1,28 @@
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  mat-card {
+    width: 100%;
+    max-width: 500px;
+  }
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 15px gap between the input and the button */
+    margin: 0; /* Ensure there's no extra margin around the elements */
+    height: 100%;
+  }
+  .input-field {
+    flex: 0 0 60%; /* Take 60% of the available width */
+  }
+  .search-button {
+    flex: 0 0 35%; /* Take 40% of the available width */
+    height: 56px; /* Set the height to match the default input field height in Angular Material */
+  }
+  .mat-form-field {
+    margin: 0; /* Remove margin to make sure fields align properly */
+  }
+

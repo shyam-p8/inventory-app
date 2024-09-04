@@ -1,0 +1,114 @@
+<div class="edit-inventory">
+    
+  
+    <!-- Search by Serial Number -->
+    <div *ngIf="!inventoryItem">
+    <!-- <h2>Edit Inventory Item</h2>
+      <label for="serial-number-search">Enter Serial Number:</label>
+      <input id="serial-number-search" type="text" [(ngModel)]="serialNumber" placeholder="Enter Serial Number" />
+      <button (click)="searchInventory()">Search</button> -->
+      <form [formGroup]="searchForm" class="search-form" (ngSubmit)="searchInventory()">
+        <mat-card class="search-mat-card">
+          <mat-card-content class="search-row">
+            <mat-form-field  class="search-mat-form-field" appearance="fill" class="input-field">
+              <mat-label>Search</mat-label>
+              <input matInput formControlName="serialNumber" placeholder="Enter your search query" required>
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" class="search-button">Search</button>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </div>
+  
+    <!-- Edit Form -->
+    <div *ngIf="inventoryItem">
+        <form [formGroup]="editInventoryForm" (ngSubmit)="onSubmit()">
+            <mat-card>
+              <mat-card-title>Edit Inventory</mat-card-title>
+              <mat-card-content>
+                <div class="form-grid">
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="category" (selectionChange)="onCategoryChange($event.value)">
+                      <mat-option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="fill">
+                    <mat-label>Subcategory</mat-label>
+                    <mat-select formControlName="sub_category">
+                      <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory">{{ subcategory }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">   
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" required>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Make</mat-label>
+                    <input matInput formControlName="make" required>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Model</mat-label>
+                    <input matInput formControlName="model" required>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>PO Number</mat-label>
+                    <input matInput formControlName="order_id" required>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Receipt Date</mat-label>
+                    <input matInput [matDatepicker]="picker3" formControlName="receipt_date" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Warranty End Date</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="warranty_expiration" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Location</mat-label>
+                    <input matInput formControlName="location" required>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Status</mat-label>
+                    <input matInput formControlName="status" required>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Serial Number</mat-label>
+                    <input matInput formControlName="serial_number" placeholder="serial_number">
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Notes</mat-label>
+                    <textarea matInput formControlName="notes"></textarea>
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
+              
+              <mat-card-actions>
+                <button  mat-raised-button color="primary" type="submit">Update Inventory</button>
+                <button class="edit-form-mat-button"  mat-button type="reset" (click)="onCancle()">Cancle</button>
+            </mat-card-actions>
+            </mat-card>
+          </form>
+          
+    </div>
+  
+    <!-- Error message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>

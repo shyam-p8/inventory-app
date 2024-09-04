@@ -4,7 +4,8 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AddInventoryComponent } from './add-inventory/add-inventory.component';
-import { IssueComponent } from './issue/issue.component';
+import { EditInventoryComponent } from './edit-inventory/edit-inventory.component';
+import { IssueInventoryComponent } from './issue-inventory/issue-inventory.component';
 
 const routes: Routes = [
   {
@@ -21,8 +22,8 @@ const routes: Routes = [
     component:HomeComponent,
     children: [
       { path: 'add-inventory', component: AddInventoryComponent },
-      { path: 'issue', component: IssueComponent }
-      
+      { path: 'edit-inventory', component: EditInventoryComponent },
+      {path:'issue-inventory', component:IssueInventoryComponent}      
     ]
   },
   {

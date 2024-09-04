@@ -1,0 +1,66 @@
+/* .edit-inventory {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  } */
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  
+  .full-width {
+    grid-column: span 2; /* Makes the field span across all columns */
+  }
+  
+  .search-mat-form-field {
+    width: 100%;
+  }
+
+  .search-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .search-mat-card {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Add a 15px gap between input and button */
+   
+  }
+  
+  .input-field {
+    width: calc(60% - 7.5px); /* Adjust width considering the gap */
+    height: 100%;
+   
+  }
+  
+  .search-button {
+    width: calc(40% - 7.5px); /* Adjust width considering the gap */
+    height: 70%; /* Match the height of the input field */
+
+  }
+  
+  /* Ensure the button and input have the same height */
+  .search-mat-form-field, .search-button {
+    display: flex;
+    align-items: center;
+  }
+  .edit-form-mat-button{
+    /* margin: 8px 8px 8px 0; */
+    /* gap: 20px; */
+    margin-left:20px;
+    background-color: darkgray;
+  }
