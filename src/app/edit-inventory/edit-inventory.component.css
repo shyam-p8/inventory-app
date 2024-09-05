@@ -1,66 +1,119 @@
-/* .edit-inventory {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  } */
-  
-  .error-message {
-    color: red;
-    margin-top: 10px;
+/* Container for the form */
+.edit-inventory {
+  max-width: 100%; /* Make it full width on mobile */
+  width: 1000px; /* Limit width on larger screens */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  padding: 15px;
+  align-self: center;
+  justify-content: center;
+}
+
+/* Responsive grid for form fields */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Default to 2 columns */
+  gap: 16px;
+}
+
+/* Make inputs span full width on small screens */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr; /* Single column layout for mobile */
+  }
+}
+
+.full-width {
+  grid-column: span 2; /* Spans across all columns */
+}
+
+@media (max-width: 768px) {
+  .full-width {
+    grid-column: span 1; /* Span only 1 column on mobile */
+  }
+}
+
+/* Full width for search input and button */
+.search-mat-form-field {
+  width: 100%;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+
+.search-mat-card {
+  width: 60%;
+  max-width: 500px;
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;  /* Allow wrapping on small screens */
+  align-items: baseline; 
+}
+
+/* Responsive input and button sizes */
+.input-field {
+  width: calc(60% - 7.5px);
+}
+
+@media (max-width: 768px) {
+  .input-field {
+    width: 100%; /* Full width on mobile */
+  }
+}
+
+.search-button {
+  width: calc(40% - 7.5px);
+  height: 70%;
+}
+
+@media (max-width: 768px) {
+  .search-button {
+    width: 100%; /* Full width on mobile */
+    height: auto; /* Auto height to fit content */
+  }
+}
+
+/* Ensure the button and input have the same height */
+.search-mat-form-field, .search-button {
+  display: flex;
+  align-items: center;
+}
+
+/* Edit form button */
+.edit-form-mat-button {
+  margin-left: 20px;
+  background-color: darkgray;
+}
+
+/* Media queries for smaller devices */
+@media (max-width: 480px) {
+  .edit-inventory {
+    padding: 10px; /* Less padding on smaller screens */
+  }
+
+  .search-mat-card {
+    max-width: 100%; /* Full width for smaller screens */
   }
 
   .form-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  
-  .full-width {
-    grid-column: span 2; /* Makes the field span across all columns */
-  }
-  
-  .search-mat-form-field {
-    width: 100%;
+    gap: 8px; /* Reduce the gap on smaller screens */
   }
 
-  .search-form {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .search-mat-card {
-    width: 100%;
-    max-width: 500px;
-  }
-  
+  /* Ensure buttons and fields stack properly on small devices */
   .search-row {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Add a 15px gap between input and button */
-   
+    flex-direction: column; /* Stack elements vertically */
+    gap: 8px;
   }
-  
-  .input-field {
-    width: calc(60% - 7.5px); /* Adjust width considering the gap */
-    height: 100%;
-   
-  }
-  
-  .search-button {
-    width: calc(40% - 7.5px); /* Adjust width considering the gap */
-    height: 70%; /* Match the height of the input field */
-
-  }
-  
-  /* Ensure the button and input have the same height */
-  .search-mat-form-field, .search-button {
-    display: flex;
-    align-items: center;
-  }
-  .edit-form-mat-button{
-    /* margin: 8px 8px 8px 0; */
-    /* gap: 20px; */
-    margin-left:20px;
-    background-color: darkgray;
-  }
+}

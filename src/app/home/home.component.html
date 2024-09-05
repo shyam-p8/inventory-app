@@ -24,11 +24,14 @@
         <button mat-icon-button (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-        <span>Home Page</span>
+        <span>Home</span>
          <!-- Right-aligned content -->
       <span class="spacer"></span>
-      <span>Session Time: {{ sessionTime}}</span>
-      <button mat-button (click)="logout()">Logout</button>
+      <span>Session : {{ sessionTime}}</span>
+      <button mat-button (click)="logout()">
+        <mat-icon style="color: red;transform: scale(1.5);">power_settings_new</mat-icon>
+      </button>
+      
         </mat-toolbar>
   
       <div class="content">

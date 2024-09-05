@@ -11,11 +11,14 @@
         <mat-card class="search-mat-card">
           <mat-card-content class="search-row">
             <mat-form-field  class="search-mat-form-field" appearance="fill" class="input-field">
-              <mat-label>Search</mat-label>
-              <input matInput formControlName="serialNumber" placeholder="Enter your search query" required>
+              <input matInput formControlName="serialNumber" placeholder="Enter your serial number" required>
             </mat-form-field>
             <button mat-raised-button color="primary" type="submit" class="search-button">Search</button>
           </mat-card-content>
+          <!-- Error message -->
+          <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+          </div>
         </mat-card>
       </form>
     </div>
@@ -24,7 +27,7 @@
     <div *ngIf="inventoryItem">
         <form [formGroup]="editInventoryForm" (ngSubmit)="onSubmit()">
             <mat-card>
-              <mat-card-title>Edit Inventory</mat-card-title>
+              <mat-card-title style="text-align: center; padding-bottom: 1%;">Edit Inventory</mat-card-title>
               <mat-card-content>
                 <div class="form-grid">
           
@@ -98,17 +101,12 @@
                 </div>
               </mat-card-content>
               
-              <mat-card-actions>
+              <mat-card-actions style="align-self: center;">
                 <button  mat-raised-button color="primary" type="submit">Update Inventory</button>
-                <button class="edit-form-mat-button"  mat-button type="reset" (click)="onCancle()">Cancle</button>
+                <button class="edit-form-mat-button"  mat-button type="reset" (click)="onCancle()">Cancel</button>
             </mat-card-actions>
             </mat-card>
           </form>
           
-    </div>
-  
-    <!-- Error message -->
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
     </div>
   </div>
