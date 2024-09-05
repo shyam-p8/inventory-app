@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class InventoryService {
-  
+   
   private baseUrl = 'http://10.98.7.218:8000';
 
   constructor(private http: HttpClient, private authService:AuthService) { }
@@ -55,5 +55,18 @@ export class InventoryService {
     });
     console.warn(`${this.baseUrl}/equipment/update_equipment/${inventoryId}/`);
     return this.http.put(`${this.baseUrl}/equipment/update_equipment/${inventoryId}/`, inventoryItem, { headers } );
+  }
+
+  getAssigneeDetails(assignedType: string, assigneeId: number) {
+    const headers = this.getHeaders();
+    return this.http.get(`${this.baseUrl}/assignee/${assignedType}/${assigneeId}/`, { headers } );
+  }
+
+  getHeaders(){
+    //get token from session storage
+    const accessToken = this.authService.getAccessToken(); 
+    // Prepare the headers
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`});
+    return headers;
   }
 }
