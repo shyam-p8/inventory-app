@@ -1,5 +1,5 @@
 <div class="search-form-div">
-<form [formGroup]="searchForm" class="search-form" (ngSubmit)="onSubmit()">
+<form [formGroup]="searchForm" class="search-form" (ngSubmit)="onSearch()">
     <mat-card calss="search-mat-card">
       <mat-card-content>
         <div class="search-row">
@@ -56,8 +56,8 @@
          
 
           <mat-form-field  class="issue-mat-form-field" appearance="fill">
-            <mat-label>PO Number</mat-label>
-            <input matInput formControlName="order_id" readonly >
+            <mat-label>Equipment Id</mat-label>
+            <input matInput formControlName="id" readonly >
           </mat-form-field>
           
          <mat-form-field  class="issue-mat-form-field" appearance="fill">
@@ -115,24 +115,34 @@
 
           <mat-form-field appearance="fill">
             <mat-label class="issue-form-field-bg-color">Employee / Location Code</mat-label>
-            <input   matInput formControlName="assignee_id"  (keydown.enter)="onAssigneeIdChange()"
-            (blur)="onAssigneeIdChange()">
+            <input matInput formControlName="assignee_id" (blur)="onAssigneeIdChange()"
+           >
+           <!-- (keydown.enter)="onAssigneeIdChange()" -->
+
           </mat-form-field>
 
           <mat-form-field  appearance="fill" class="employee_location_detail">
             <mat-label class="issue-form-field-bg-color">Employee / Location Detail</mat-label>
             <input matInput formControlName="assigned_name" readonly>
           </mat-form-field>
+          
+          <mat-form-field appearance="fill">
+            <mat-label class="issue-form-field-bg-color">Remark</mat-label>
+            <input matInput formControlName="remark">
+            </mat-form-field>
 
+            <div class="file-upload-section">
+              <mat-label>Upload File:(Image/PDF)</mat-label>
+              <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png">
+            </div>
 
         </div>
         </mat-card-content>
   
-      
-      <!-- <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit">Add Inventory</button>
-        <button mat-button type="reset">Reset</button>
-      </mat-card-actions> -->
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Submit</button>
+        <button mat-button type="reset">Cancel</button>
+      </mat-card-actions>
     </mat-card>
    </form>
  </div>

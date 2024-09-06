@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { invntoryItem } from '../data-type';
+import { invntoryItem, issueInventory } from '../data-type';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -68,5 +68,15 @@ export class InventoryService {
     // Prepare the headers
     const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`});
     return headers;
+  }
+
+  issuetInventory(formData: FormData): Observable<any>{
+    // const headers = this.getHeaders();
+    const accessToken = this.authService.getAccessToken(); // Replace with the actual access token
+    // Prepare the headers
+    const headers = new HttpHeaders({
+         'Authorization': `Bearer ${accessToken}`
+    });
+    return this.http.post(`${this.baseUrl}/assignment/issue_equipment/`, formData,{ headers } );
   }
 }
