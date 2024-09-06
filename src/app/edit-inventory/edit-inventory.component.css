@@ -74,6 +74,7 @@
 }
 
 .search-button {
+  background-color: #081e3f;
   width: calc(40% - 7.5px);
   height: 70%;
 }
@@ -91,10 +92,16 @@
   align-items: center;
 }
 
+/* Update form button */
+.update-form-mat-button {
+  margin-left: 20px;
+  background-color: #081e3f;
+}
+
 /* Edit form button */
 .edit-form-mat-button {
   margin-left: 20px;
-  background-color: darkgray;
+  background-color: red;
 }
 
 /* Media queries for smaller devices */
