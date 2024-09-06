@@ -10,10 +10,10 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <mat-list>
-            <mat-list-item routerLink="add-inventory">Add Inventory</mat-list-item>
-            <mat-list-item routerLink="edit-inventory">Edit Inventory</mat-list-item>
-            <mat-list-item routerLink="issue-inventory">Issue Material</mat-list-item>
-            <mat-list-item routerLink="issue-inventory">Receive Material</mat-list-item>
+            <mat-list-item routerLink="add-inventory" class="hover-effect">Add Inventory</mat-list-item>
+            <mat-list-item routerLink="edit-inventory"  class="hover-effect">Edit Inventory</mat-list-item>
+            <mat-list-item routerLink="issue-inventory" class="hover-effect">Issue Material</mat-list-item>
+            <mat-list-item routerLink="issue-inventory" class="hover-effect">Receive Material</mat-list-item>
           </mat-list>
         </mat-expansion-panel>
       </mat-nav-list>
@@ -24,12 +24,15 @@
         <button mat-icon-button (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-        <span>Home Page</span>
+        <span>Home</span>
          <!-- Right-aligned content -->
       <span class="spacer"></span>
-      <span>Session Time: {{ sessionTime}}</span>
-      <button mat-button (click)="logout()">Logout</button>
-        </mat-toolbar>
+      <span>Session : {{ sessionTime}}</span>
+      <button mat-button (click)="logout()">
+        <mat-icon style="color: red;transform: scale(1.5);">power_settings_new</mat-icon>
+      </button>
+      
+      </mat-toolbar>
   
       <div class="content">
         <router-outlet></router-outlet>

@@ -1,62 +1,196 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('src/assets/Onsite_Inventory.jpg'); /* Replace with the correct image path */
+  background-size: cover; /* Ensures the image covers the whole screen */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  height: 93vh; /* Full viewport height */
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  margin-left: 10%;
+  width: 100%;
+  height: 100%; /* Full height of the viewport */
+}
+
+.card {
+  width: 100%;
+  margin-left: 0%;
+  max-width: 350px; /* Max width to ensure it doesn't stretch too much on larger screens */
+  background-color: #50cef5;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h2 {
+  color: #081e3f;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  color: #081e3f;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px;
+  background-color: #081e3f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.switch {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.switch a {
+  color: #081e3f;
+  text-decoration: none;
+}
+
+/* Responsive for tablets (width less than 768px) */
+@media (max-width: 768px) {
   .container {
-    display: flex;
+    margin-left: 5%;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    /* Adjust height for better alignment */
   }
-  
+
   .card {
-    width: 300px;
-    background-color: #b5ddf9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    max-width: 300px; /* Slightly smaller card */
+    padding: 15px;
   }
-  
+
   h2 {
-    color: #007BFF;
-    margin-bottom: 20px;
+    font-size: 24px; /* Smaller font for heading */
   }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  label {
-    text-align: left;
-    margin-bottom: 5px;
-  }
-  
+
   input {
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 8px;
   }
-  
+
   button {
-    padding: 10px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .switch {
-    margin-top: 15px;
+    padding: 8px;
     font-size: 14px;
   }
-  
-  .switch a {
-    color: #007BFF;
-    text-decoration: none;
+}
+
+/* Responsive for mobile (width less than 480px) */
+@media (max-width: 480px) {
+  .container {
+    margin-left: 0;
+    justify-content: center;
+    padding: 20px; /* Add padding for smaller screens */
   }
+
+  .card {
+    max-width: 100%; /* Full-width on mobile */
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 20px; /* Further reduce heading size */
+  }
+
+  input {
+    padding: 6px;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .switch {
+    font-size: 12px;
+  }
+}
+
+
+
+
+
+
+
+
+/* Style for the header */
+.header {
+  background-color: #50cef5;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 7vh;
+}
+
+/* Flex container for the logo and text */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Logo styling */
+.logo {
+  max-height: 90%;
+  height: 100%;
+  width: auto;
+  margin-right: 20px;
+  object-fit: scale-down;;
+}
+
+/* Title styling */
+.header-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #081e3f;
+  align-items: center;
+  text-align: center;
+  margin: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 18px;
+  }
+
+  .logo {
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 16px;
+  }
+
+  .logo {
+    height: 30px;
+  }
+}
