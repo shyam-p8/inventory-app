@@ -15,7 +15,7 @@ export interface login{
 }
 
 export interface invntoryItem{
-    name:string ,
+    name:string,
     make: string,
     model: string,
     category: string,
@@ -28,6 +28,17 @@ export interface invntoryItem{
     assigned_to:string,
     notes: string,
     sub_category:string
+    equipment_id:number
+}
+
+export interface issueInventory{
+    assignee_id:number,
+    assigned_type:string,
+    assigned_condition:string,
+    assigned_date:string,
+    equipment_id:number,
+    notes:string
+   
 }
 // export interface product{
 //     id:string
