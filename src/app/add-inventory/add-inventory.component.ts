@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { invntoryItem } from '../data-type';
+import { inventoryItem } from '../data-type';
 import { DatePipe } from '@angular/common';  // Import DatePipe
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { InventoryService } from '../services/inventory.service';
@@ -41,18 +41,22 @@ export class AddInventoryComponent implements OnInit{
       subcategories: ['External Hard Drive', 'Keyboard', 'Mouse', 'Scanner', 'Network Switch', 'UPS']
     }
   ];
+  itemCondition :string[]=[];// = ['NEW & WORKING', 'OLD & WORKING', 'NEW & NOT-WORKING'];
   assignedTypes = ['Employee', 'Department', 'Project', 'Other'];
+  statusLov:string[]=[];
   subcategories: string[] = [];
   constructor(private fb: FormBuilder,private datePipe: DatePipe, private http:HttpClient, private inventoryService:InventoryService) { }
 
   ngOnInit(): void {
+    this.getLov();
     this.inventoryForm = this.fb.group({
       name: ['', Validators.required],
       make: ['', Validators.required],
       model: ['', Validators.required],
       category: ['', Validators.required],
       subcategory: ['', Validators.required], 
-      // assignedType: ['', Validators.required],
+      item_condition: ['', Validators.required],
+      assignment_id:[''],
       // assignedId: ['', Validators.required],
       order_id: ['', Validators.required],
       // purchaseDate: ['', Validators.required],
@@ -65,6 +69,40 @@ export class AddInventoryComponent implements OnInit{
     });
   }
 
+  getLov(){
+    this.inventoryService.getItemConditionLov().subscribe({
+      next: (result: any) => {
+        if (result) {
+         this.itemCondition=result.condition_list;
+         console.warn("condition lov=",this.itemCondition);
+        }
+      },
+      error: (error) => {
+        if (error.error && error.error.message) {
+         console.warn("error in getting item condition list "+error.error.message);
+        } else {
+          console.error('Error getting status LOV:', error);
+          }
+         }
+    });
+    this.inventoryService.getStatusLov().subscribe({
+      next: (result: any) => {
+        if (result) {
+         this.statusLov=result.status_list;
+         console.warn("status lov=",this.statusLov);
+        }
+      },
+      error: (error) => {
+        if (error.error && error.error.message) {
+          console.warn("error in getting status list "+error.error.message);
+        } else {
+          console.error('Error getting status LOV:', error);
+          }
+         }
+    });
+
+  }
+
   onCategoryChange(categoryName: string): void {
     const selectedCategory = this.categories.find(category => category.name === categoryName);
     this.subcategories = selectedCategory ? selectedCategory.subcategories : [];
@@ -72,8 +110,7 @@ export class AddInventoryComponent implements OnInit{
     this.inventoryForm.get('subcategory')!.setValue('');
   }
   onSubmit(): void {
-    if (this.inventoryForm.valid){
-       
+    if (this.inventoryForm.valid){       
        // Split the serial numbers input into an array by new lines, commas, or spaces
        const serialNumbersArray = this.inventoryForm.value.serialNumbers
        .split(/[\n,\t ]+/)
@@ -81,8 +118,8 @@ export class AddInventoryComponent implements OnInit{
        const purchaseDate = this.datePipe.transform(this.inventoryForm.value.purchaseDate, 'yyyy-MM-dd');
        const receiptDate = this.datePipe.transform(this.inventoryForm.value.receiptDate, 'yyyy-MM-dd');
        const warrantyEndDate = this.datePipe.transform(this.inventoryForm.value.warrantyEndDate, 'yyyy-MM-dd');
-           
-       const itemList: invntoryItem[] = serialNumbersArray.map((serialNumber: any) => {
+         
+       const itemList: inventoryItem[] = serialNumbersArray.map((serialNumber: any) => {
         return {
           name: this.inventoryForm.value.name,
           make: this.inventoryForm.value.make,
@@ -96,7 +133,8 @@ export class AddInventoryComponent implements OnInit{
           notes: this.inventoryForm.value.notes,
           location:this.inventoryForm.value.location,
           sub_category: this.inventoryForm.value.subcategory,
-          assigned_to:'na',
+          assignment_id:null,
+          condition:this.inventoryForm.value.item_condition,
         };
       });
       
@@ -109,6 +147,8 @@ export class AddInventoryComponent implements OnInit{
            // console.log('Inventory items successfully submitted', result);
             if (result.status === 'success') {
               alert(result.message);
+           // Reset the form after successful submission
+              this.inventoryForm.reset();
             }
           },
           error: (error) => {

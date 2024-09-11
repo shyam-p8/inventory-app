@@ -25,6 +25,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { EditInventoryComponent } from './edit-inventory/edit-inventory.component';
 import { IssueInventoryComponent } from './issue-inventory/issue-inventory.component';
+import { ReceiveInventoryComponent } from './receive-inventory/receive-inventory.component';
 
 @NgModule({
   declarations:[
@@ -34,7 +35,8 @@ import { IssueInventoryComponent } from './issue-inventory/issue-inventory.compo
     NavbarComponent,
     AddInventoryComponent,
     EditInventoryComponent,
-    IssueInventoryComponent 
+    IssueInventoryComponent,
+    ReceiveInventoryComponent 
   ],
   
   imports: [

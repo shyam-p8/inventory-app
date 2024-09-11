@@ -1,25 +1,27 @@
-<div class="search-form-div">
+<div *ngIf="!issueForm" class="search-form-div">
 <form [formGroup]="searchForm" class="search-form" (ngSubmit)="onSearch()">
     <mat-card calss="search-mat-card">
       <mat-card-content>
         <div class="search-row">
           <mat-form-field appearance="fill" class="input-field">
             <mat-label>Search</mat-label>
-            <input matInput formControlName="serial_number" placeholder="Enter your search query" required>
+            <input matInput formControlName="serial_number" placeholder="Enter Serial Number" required>
           </mat-form-field>
           <button mat-raised-button color="primary" type="submit" class="search-button">Search</button>
         </div>
       </mat-card-content>
-    </mat-card>
-  </form>
-</div>
-
- <!-- Error message -->
+        <!-- Error message -->
 <div *ngIf="errorMessage" class="error-message">
   {{ errorMessage }}
 </div>
+    </mat-card>
 
-<div class="issue-inventory-form-div">
+</form>
+</div>
+
+
+
+<div *ngIf="issueForm" class="issue-inventory-form-div">
   <form [formGroup]="issueInventoryForm" class="issue-inventory-form" >
     <mat-card class="isuue-mat-card">
        <mat-card-content class="isuue-mat-content">
@@ -71,10 +73,15 @@
             <input matInput formControlName="warranty_expiration" readonly >
             
           </mat-form-field>
-
+<!-- 
           <mat-form-field  class="issue-mat-form-field" appearance="fill">
             <mat-label>Location</mat-label>
             <input matInput formControlName="location" readonly>
+          </mat-form-field> -->
+
+          <mat-form-field  class="issue-mat-form-field" appearance="fill">
+            <mat-label>Item Condition</mat-label>
+            <input matInput formControlName="condition" readonly>
           </mat-form-field>
   
           <mat-form-field  class="issue-mat-form-field" appearance="fill">
@@ -102,7 +109,7 @@
           <mat-form-field appearance="fill" >
             <mat-label class="issue-form-field-bg-color">Assigned Condition</mat-label>
             <mat-select formControlName="assigned_condition">
-              <mat-option *ngFor="let type of assignedCondition" [value]="type">{{ type }}</mat-option>
+              <mat-option *ngFor="let type of itemCondition" [value]="type">{{ type }}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -132,7 +139,7 @@
             </mat-form-field>
 
             <div class="file-upload-section">
-              <mat-label>Upload File:(Image/PDF)</mat-label>
+              <mat-label>Upload File:(Image/PDF and Size<=1 MB)</mat-label>
               <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png">
             </div>
 
@@ -140,8 +147,9 @@
         </mat-card-content>
   
       <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Submit</button>
-        <button mat-button type="reset">Cancel</button>
+        <button *ngIf="!printReceipt" mat-raised-button color="primary" type="submit" (click)="onSubmit()">Submit</button>
+        <button *ngIf="printReceipt" mat-raised-button color="primary" type="submit" (click)="onPrintReceipt()">Print Receipt</button>
+        <button mat-button type="reset" (click)="onCancel()">Cancel</button>
       </mat-card-actions>
     </mat-card>
    </form>

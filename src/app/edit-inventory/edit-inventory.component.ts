@@ -12,7 +12,6 @@ export class EditInventoryComponent implements OnInit {
   editForm : boolean=false
   inventoryId:number=0;
   serialNumber: string = '';
-  inventoryItem: any = null;
   errorMessage: string = '';
   editInventoryForm: FormGroup;
   searchForm : FormGroup
@@ -39,6 +38,8 @@ export class EditInventoryComponent implements OnInit {
     }
   ];
   subcategories: string[] = [];
+  itemCondition :string[]=[];
+  statusLov:string[]=[];
   constructor(
     private fb: FormBuilder,
     private inventoryService: InventoryService,
@@ -58,30 +59,74 @@ export class EditInventoryComponent implements OnInit {
       location: ['', Validators.required],
       status: ['', Validators.required],
       serial_number: ['', Validators.required],
+      condition: ['', Validators.required],
       notes: ['']
+      
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  this.getLov();
+  }
+ getLov(){
+    this.inventoryService.getItemConditionLov().subscribe({
+      next: (result: any) => {
+        if (result) {
+         this.itemCondition=result.condition_list;
+         console.warn("condition lov=",this.itemCondition);
+        }
+      },
+      error: (error) => {
+        if (error.error && error.error.message) {
+         console.warn("error in getting item condition list "+error.error.message);
+        } else {
+          console.error('Error getting status LOV:', error);
+          }
+         }
+    });
+    this.inventoryService.getStatusLov().subscribe({
+      next: (result: any) => {
+        if (result) {
+         this.statusLov=result.status_list;
+         console.warn("status lov=",this.statusLov);
+        }
+      },
+      error: (error) => {
+        if (error.error && error.error.message) {
+          console.warn("error in getting status list "+error.error.message);
+        } else {
+          console.error('Error getting status LOV:', error);
+          }
+         }
+    });
 
+  }
   searchInventory(): void {
     this.inventoryService.getInventoryBySerialNumber(this.searchForm.value.serialNumber).subscribe({
       next: (result: any) => {
         if (result) {
-          this.inventoryItem = result[0];
+          //this.inventoryItem = result[0];
           this.editForm=true
           console.warn(result);
           this.inventoryId=result[0].id;
+          
+          //this.editInventoryForm.patchValue(result[0]);
+          //this.editInventoryForm.patchValue({sub_category=result[0].sub_category})
+          this.editInventoryForm.controls['category'].patchValue(result[0].category);
+          this.onCategoryChange(result[0].category);
+          this.editInventoryForm.controls['sub_category'].patchValue(result[0].sub_category);
           this.editInventoryForm.patchValue(result[0]);
           this.errorMessage = '';
         } else {
           this.errorMessage = 'No inventory item found with this serial number.';
-          this.inventoryItem = null;
+          this.editForm=false;
+         // this.inventoryItem = null;
         }
       },
       error: (error) => {
         console.error('Error fetching inventory item:', error);
         this.errorMessage = 'An error occurred while searching for the inventory item.';
+        this.editForm=false;
       }
     });
   }
@@ -100,7 +145,8 @@ export class EditInventoryComponent implements OnInit {
         next: (result: any) => {
           if (result.status === 'success') {
             alert('Inventory item successfully updated.');
-            this.inventoryItem='';
+            this.editForm=false;
+          //  this.inventoryItem='';
             this.route.navigate(['/home/edit-inventory']);
           }
         },
@@ -114,7 +160,7 @@ export class EditInventoryComponent implements OnInit {
 
   onCancle(): void {
    this.editForm=false;
-   this.inventoryItem='';
+ //  this.inventoryItem='';
    this.route.navigate(['/home/edit-inventory']);
   }
 

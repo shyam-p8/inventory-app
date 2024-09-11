@@ -1,0 +1,121 @@
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  .search-form {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+  
+    .search-mat-card {
+      width: 100%;
+      max-width: 500px;
+    }
+    .search-row {
+      display: flex;
+      align-items: center;
+      gap: 20px; /* 15px gap between the input and the button */
+      margin: 0; /* Ensure there's no extra margin around the elements */
+      height: 100%;
+    }
+    .input-field {
+      flex: 0 0 60%; /* Take 60% of the available width */
+      
+    }
+    .search-button {
+      flex: 0 0 35%; /* Take 40% of the available width */
+      height: 56px; /* Set the height to match the default input field height in Angular Material */
+    }
+    .mat-form-field {
+      margin: 0; /* Remove margin to make sure fields align properly */
+    }
+  
+  
+  
+  
+    .issue-inventory-form-div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      margin-top: 10px;
+    }
+    
+    .issue-inventory-form {
+      width: 1200px;
+      height: 660px;
+    }
+    
+    .isuue-mat-card {
+      width: 1200px;
+      height: 650px;
+    }
+    
+    .isuue-mat-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      height: 100%;
+    }
+    
+    .issue-form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* 2 columns */
+      gap: 15px;
+      width: 100%;
+    }
+    
+    .issue-mat-form-field {
+      width: 100%;
+    }
+    
+    /* .full-width {
+      grid-column: 1 / -1; 
+    } */
+  
+    .employee_location_detail{
+      grid-column: span 2;
+      /* grid-column: 2 */
+    }
+    .issue-form-field-bg-color{
+      font-weight: bold;
+      color: blue;
+    }
+    
+    /* Optional styling for the card content and form spacing */
+    mat-card-content {
+      padding: 20px;
+    }
+  
+  /* 
+    .issue-inventory-form {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+     }
+    .issue-mat-card {
+      width: 100%;
+      max-width: 900px;
+    }
+  
+    .isuue-mat-content{
+      width: 100%;
+      
+    }
+  
+    .issue-form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    
+    .full-width {
+      grid-column: span 2;
+    }
+    
+    .issue-mat-form-field {
+      width: 100%;
+    }  */
+  

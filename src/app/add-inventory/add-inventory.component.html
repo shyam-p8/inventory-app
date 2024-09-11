@@ -18,12 +18,7 @@
                   <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory">{{ subcategory }}</mat-option>
                 </mat-select>
               </mat-form-field>
-
-          <mat-form-field appearance="fill">   
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" required>
-          </mat-form-field>
-  
+       
           <mat-form-field appearance="fill">
             <mat-label>Make</mat-label>
             <input matInput formControlName="make" required>
@@ -77,14 +72,18 @@
             <mat-label>Serial Number</mat-label>
             <input matInput formControlName="serialNumber" required>
           </mat-form-field> -->
-          <mat-form-field appearance="fill">
-            <mat-label>Location</mat-label>
-            <input matInput formControlName="location" required>
+       
+          <mat-form-field appearance="fill" >
+            <mat-label>Condition</mat-label>
+            <mat-select formControlName="item_condition" required>
+              <mat-option *ngFor="let type of itemCondition" [value]="type">{{ type }} </mat-option>
+            </mat-select>
           </mat-form-field>
-  
           <mat-form-field appearance="fill">
             <mat-label>Status</mat-label>
-            <input matInput formControlName="status" required>
+            <mat-select formControlName="status" [value]="statusLov[0]" required>
+              <mat-option *ngFor="let type of statusLov" [value]="type">{{ type }} </mat-option>
+            </mat-select>          
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="full-width">

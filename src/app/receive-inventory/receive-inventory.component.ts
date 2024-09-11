@@ -2,42 +2,31 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryService } from '../services/inventory.service';
 import { Router } from '@angular/router';
-import {  issueInventory } from '../data-type';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-issue-inventory',
-  templateUrl: './issue-inventory.component.html',
-  styleUrls: ['./issue-inventory.component.css']
+  selector: 'app-receive-inventory',
+  templateUrl: './receive-inventory.component.html',
+  styleUrls: ['./receive-inventory.component.css']
 })
-export class IssueInventoryComponent implements OnInit {
-  issueForm: boolean = false
+export class ReceiveInventoryComponent implements OnInit {
+  receiveForm: boolean = false;
+  printReceipt:boolean=false;
   selectedFile: File | null = null;
   searchForm: FormGroup;
-  assignment_id!:number;
-  receiptType:string='issue';
-  assignmentCondition :string[]=[];
-  issueInventoryForm!: FormGroup;
-  issueInventoryApiJson: issueInventory = {
-    assignee_id: 0,
-    assigned_type: '',
-    assigned_condition: '',
-    assigned_date: '',
-    equipment_id: 0,
-    notes: ''
-  };
+  receiveInventoryForm!: FormGroup;
+  assignment_id!: number;
+  receiptType:string='receive';
   errorMessage!: string;
-  assignedTypes = ['Employee', 'Location', 'Other'];
   itemCondition : string[]=[];
-  printReceipt:boolean=false
-  constructor(
+    constructor(
     private fb: FormBuilder,
     private inventoryService: InventoryService, private datePipe: DatePipe,
     private route: Router) { this.searchForm = this.fb.group({ serial_number: ['', Validators.required], }) }
 
   ngOnInit(): void {
     this.getLov();
-    this.issueInventoryForm = this.fb.group({
+    this.receiveInventoryForm = this.fb.group({
       category: [''],
       sub_category: [''],
       name: [''],
@@ -47,19 +36,21 @@ export class IssueInventoryComponent implements OnInit {
       receipt_date: [''],
       warranty_expiration: [''],
       location: [''],
-      condition:[''],
       status: [''],
       serial_number: [''],
       notes: [''],
-      assigned_type: ['', Validators.required],
-      assignee_id: ['', Validators.required],
-      assigned_date: ['', Validators.required],
+      assigned_type: [''],
+      assigned_to: [''],
+      assigned_date: [''],
       assigned_name: [''],
-      assigned_condition: ['', Validators.required],
-      remark: ['']
+      assigned_condition: [''],
+      issue_remark: [''],
+      return_date: ['', Validators.required],
+      return_condition: ['', Validators.required],
+      return_remark: [''],
+
     });
   }
-
   getLov(){
     this.inventoryService.getItemConditionLov().subscribe({
       next: (result: any) => {
@@ -105,26 +96,25 @@ export class IssueInventoryComponent implements OnInit {
 
 
   }
-  onAssigneeIdChange() {
-    const assignee_id = this.issueInventoryForm.get('assignee_id')?.value;
-    const assigned_type = this.issueInventoryForm.get('assigned_type')?.value;
+  getAndSetAssignedName(assignee_id:number,assigned_type:string) {
+    
     if (assignee_id && assigned_type) {
       this.inventoryService.getAssigneeDetails(assigned_type, assignee_id).subscribe({
         next: (result: any) => {
           console.log('Assignee details:', result);
           if (result && result.employee_name) {
             // You can now set these details in your form or display them
-            this.issueInventoryForm.patchValue({
+            this.receiveInventoryForm.patchValue({
               // Update other fields with employee/location details
               assigned_name: result.employee_name + " # " + result.designation + " # " + result.work_location
-            });
+              });
           } else if (result && result.location_name) {
-            this.issueInventoryForm.patchValue({ assigned_name: result.location_name });
+            this.receiveInventoryForm.patchValue({ assigned_name: result.location_name });
           }
         },
         error: (error) => {
           console.error('Error fetching assignee details:', error);
-          this.issueInventoryForm.patchValue({ assigned_name: "" });
+          this.receiveInventoryForm.patchValue({ assigned_name: "" });
         }
       });
     }
@@ -134,17 +124,38 @@ export class IssueInventoryComponent implements OnInit {
     this.inventoryService.getInventoryBySerialNumber(this.searchForm.value.serial_number).subscribe({
       next: (result: any) => {
         if (result) {
-          this.issueInventoryForm.patchValue(result[0]);
-          this.issueForm = true;
+          this.assignment_id=result[0].assignment_id;
+          if(this.assignment_id==null){
+            alert("This item has not been issued. You cannot receive it.");
+            this.receiveForm=false
+            return;
+          }else{
+            this.inventoryService.getInventoryAssignmentDetail(this.assignment_id).subscribe({next:(res:any)=>{
+              if(res){
+                this.receiveInventoryForm.patchValue(res[0]);
+                this.getAndSetAssignedName(res[0].assigned_to,res[0].assigned_type);
+                this.receiveInventoryForm.patchValue({issue_remark: res[0].notes});
+              }else {
+                this.receiveForm = false;
+                this.errorMessage = 'No assignment detail found with this assignment_id='+this.assignment_id;              }
+            },
+            error: (error) => {
+              console.error('Error fetching assignment detail :', error);
+              this.receiveForm = false;
+              this.errorMessage = 'An error occurred while searching for the assignment detail.';
+            } });
+          }
+          this.receiveInventoryForm.patchValue(result[0]);
+          this.receiveForm = true;
           this.errorMessage = '';
         } else {
-          this.issueForm = false;
+          this.receiveForm = false;
           this.errorMessage = 'No inventory item found with this serial number.';
         }
       },
       error: (error) => {
         console.error('Error fetching inventory item:', error);
-        this.issueForm = false;
+        this.receiveForm = false;
         this.errorMessage = 'An error occurred while searching for the inventory item.';
       }
     });
@@ -153,38 +164,30 @@ export class IssueInventoryComponent implements OnInit {
   onSubmit() {
     const formData: FormData = new FormData();
     // // Append form values
-    if (this.issueInventoryForm.valid) {
+    if (this.receiveInventoryForm.valid) {
       // Append form values to FormData
-      formData.append('assigned_condition', this.issueInventoryForm.value.assigned_condition);
-      formData.append('assigned_type', this.issueInventoryForm.value.assigned_type);
-      formData.append('assignee_id', this.issueInventoryForm.value.assignee_id);
-      formData.append('notes', this.issueInventoryForm.value.remark);
-      formData.append('equipment_id', this.issueInventoryForm.value.id);
-
+      formData.append('returned_condition', this.receiveInventoryForm.value.return_condition);
+      formData.append('notes', this.receiveInventoryForm.value.return_remark);
+      
       // Safely transform the assigned_date, and handle null/undefined values
-      const assignedDateValue = this.issueInventoryForm.value?.assigned_date;
-      const formattedDate = assignedDateValue ? this.datePipe.transform(assignedDateValue, 'yyyy-MM-dd') : '';
-      formData.append('assigned_date', formattedDate || '');
+      const returnedDateValue = this.receiveInventoryForm.value?.return_date;
+      const formattedDate = returnedDateValue ? this.datePipe.transform(returnedDateValue, 'yyyy-MM-dd') : '';
+      formData.append('return_date', formattedDate || '');
 
       // Append file if selected
       if (this.selectedFile) {
         formData.append('file', this.selectedFile);
       }
 
-      this.inventoryService.issueInventory(formData).subscribe({
+      this.inventoryService.returnInventory(this.assignment_id,formData).subscribe({
         next: (result: any) => {
-          // console.log('Inventory items successfully submitted', result);
           if (result.status === 'success') {
-            this.assignment_id=result.assignment_id;
             this.printReceipt=true;
-            alert(result.message);
-          // this.issueInventoryForm.reset();
+            alert(result.message);            
           }
         },
         error: (error: { error: { message: any; }; }) => {
-          // Checking if error has a response body with a message
           if (error.error && error.error.message) {
-            //  console.error('Error submitting inventory:', error.error.message);
             alert(error.error.message);
           } else {
             console.error('Error submitting inventory:', error);
@@ -195,12 +198,12 @@ export class IssueInventoryComponent implements OnInit {
     }
   }
    onCancel(): void {
-    this.issueForm=false;
-    this.printReceipt=false;
-    this.route.navigate(['/home/issue-inventory']);
+    this.receiveForm=false;
+    this.route.navigate(['/home/receive-inventory']);
    }
 
    onPrintReceipt(){
+    if(this.receiptType){
     this.inventoryService.getReceiptTemplate(this.receiptType,this.assignment_id).subscribe({
       next: (htmlTemplate: string) => {
         if (htmlTemplate) {
@@ -215,8 +218,7 @@ export class IssueInventoryComponent implements OnInit {
           // Focus and trigger the print
           printWindow.focus();
           printWindow.print();
-        } 
-      }else {
+        } }else {
           alert('Error: Could not retrieve receipt template.');
         }
       },
@@ -225,6 +227,7 @@ export class IssueInventoryComponent implements OnInit {
       }
     });
    }
+  }
 
 }
 

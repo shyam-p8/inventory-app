@@ -2,12 +2,8 @@
     
   
     <!-- Search by Serial Number -->
-    <div *ngIf="!inventoryItem">
-    <!-- <h2>Edit Inventory Item</h2>
-      <label for="serial-number-search">Enter Serial Number:</label>
-      <input id="serial-number-search" type="text" [(ngModel)]="serialNumber" placeholder="Enter Serial Number" />
-      <button (click)="searchInventory()">Search</button> -->
-      <form [formGroup]="searchForm" class="search-form" (ngSubmit)="searchInventory()">
+    <div *ngIf="!editForm">
+       <form [formGroup]="searchForm" class="search-form" (ngSubmit)="searchInventory()">
         <mat-card class="search-mat-card">
           <mat-card-content class="search-row">
             <mat-form-field  class="search-mat-form-field" appearance="fill" class="input-field">
@@ -24,7 +20,7 @@
     </div>
   
     <!-- Edit Form -->
-    <div *ngIf="inventoryItem">
+    <div *ngIf="editForm">
         <form [formGroup]="editInventoryForm" (ngSubmit)="onSubmit()">
             <mat-card>
               <mat-card-title style="text-align: center; padding-bottom: 1%;">Edit Inventory</mat-card-title>
@@ -41,7 +37,7 @@
                   <mat-form-field appearance="fill">
                     <mat-label>Subcategory</mat-label>
                     <mat-select formControlName="sub_category">
-                      <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory">{{ subcategory }}</mat-option>
+                      <mat-option *ngFor="let sub_category of subcategories" [value]="sub_category">{{ sub_category }}</mat-option>
                     </mat-select>
                   </mat-form-field>
           
@@ -84,9 +80,22 @@
                     <input matInput formControlName="location" required>
                   </mat-form-field>
           
-                  <mat-form-field appearance="fill">
+                  <!-- <mat-form-field appearance="fill">
                     <mat-label>Status</mat-label>
                     <input matInput formControlName="status" required>
+                  </mat-form-field> -->
+                  <mat-form-field appearance="fill" >
+                    <mat-label>Condition</mat-label>
+                    <mat-select formControlName="condition" required>
+                      <mat-option *ngFor="let type of itemCondition" [value]="type">{{ type }} </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="fill">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status" required>
+                      <mat-option *ngFor="let type of statusLov" [value]="type">{{ type }} </mat-option>
+                    </mat-select>
                   </mat-form-field>
           
                   <mat-form-field appearance="fill">
@@ -98,8 +107,8 @@
                     <mat-label>Notes</mat-label>
                     <textarea matInput formControlName="notes"></textarea>
                   </mat-form-field>
-                </div>
-              </mat-card-content>
+                  </div>
+                </mat-card-content>
               
               <mat-card-actions style="align-self: center;">
                 <button mat-raised-button color="primary" class="update-form-mat-button"  type="submit">Update</button>

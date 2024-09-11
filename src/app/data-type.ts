@@ -14,7 +14,7 @@ export interface login{
     password:string
 }
 
-export interface invntoryItem{
+export interface inventoryItem{
     name:string,
     make: string,
     model: string,
@@ -25,10 +25,11 @@ export interface invntoryItem{
     serial_number: string, // Updated form control for multiple serial numbers
     status: string,
     location:string,
-    assigned_to:string,
+    assignment_id:number,
     notes: string,
-    sub_category:string
-    equipment_id:number
+    sub_category:string,
+    condition:string,
+    equipment_id:number,
 }
 
 export interface issueInventory{

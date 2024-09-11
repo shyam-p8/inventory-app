@@ -14,6 +14,11 @@ export class AuthService {
     this.startSessionTimer();
   }
 
+  // This method checks if the user is authenticated by verifying a token in sessionStorage or localStorage
+  isAuthenticated(): boolean {
+    const token = sessionStorage.getItem('token');  // Use your token handling logic
+    return !!token;  // Return true if token exists
+  }
   // Method to check if the token is expired
   isTokenExpired(): boolean {
     const sessionEnd = sessionStorage.getItem('session_end');
@@ -57,8 +62,9 @@ export class AuthService {
       }
     });
   }
-
    getAccessToken(){
     return sessionStorage.getItem('token');
   }
+
+
 }
