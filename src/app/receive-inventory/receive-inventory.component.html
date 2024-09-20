@@ -40,11 +40,7 @@
                     <input matInput formControlName="sub_category" readonly >
                   </mat-form-field>
     
-              <mat-form-field class="issue-mat-form-field" appearance="fill">   
-                <mat-label>Name</mat-label>
-                <input matInput formControlName="name" readonly >
-              </mat-form-field>
-      
+            
               <mat-form-field class="issue-mat-form-field" appearance="fill">
                 <mat-label>Make</mat-label>
                 <input matInput formControlName="make" readonly>
@@ -139,7 +135,15 @@
               <mat-form-field appearance="fill">
                 <mat-label class="issue-form-field-bg-color">Return Remark</mat-label>
                 <input matInput formControlName="return_remark">
-                </mat-form-field>      
+                </mat-form-field>  
+                <mat-form-field appearance="fill">
+                  <mat-label class="issue-form-field-bg-color">Return Person Name</mat-label>
+                  <input matInput formControlName="return_person_name">
+                  </mat-form-field>
+                  <mat-form-field appearance="fill">
+                    <mat-label class="issue-form-field-bg-color">Return Person Code</mat-label>
+                    <input matInput formControlName="return_person_code">
+                    </mat-form-field>    
     
                 <div class="file-upload-section">
                   <mat-label>Upload File:(Image/PDF and Size<=1 MB)</mat-label>

@@ -1,0 +1,30 @@
+.card-header {
+    background-color:  #50cef5;
+    color: white;
+    text-align: center;
+    text-decoration: solid;
+    font-size: large;
+}
+.card-header{
+    /* padding: 20px 0;   */
+  }
+  
+  .card-header h4 {
+    margin: 0;  
+    font-weight: bold; 
+    font-family:  Roboto, sans-serif;;
+    font-size: 1.2em;
+    color:#081e3f
+  }
+  .card-header p{
+    color: red;
+  }
+
+  .d-flex{
+    padding: 10px;
+  }
+  .blue-bold-label {
+    color: blue;
+    font-weight: bold;
+  }
+  

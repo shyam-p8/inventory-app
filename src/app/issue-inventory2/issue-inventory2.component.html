@@ -1,0 +1,165 @@
+
+  
+    <div class="container mt-4">
+        <div class="card">
+         <div class="card-header text-center">
+            <form [formGroup]="searchForm" (ngSubmit)="searchInventory()">
+              <h4>Issue Inventory Form</h4>
+              <div class="d-flex justify-content-center">
+                <input type="text" id="serialNumber" class="form-control" formControlName="serialNumber" required style="width: 15%;">
+                <button type="submit" class="btn btn-primary ms-2" [disabled]="searchForm.invalid">Search</button>
+              </div>
+              <div><p>{{errorMessage}}</p> </div>
+            </form>
+          </div>
+          <!-- (ngSubmit)="onSubmit()" -->
+          <form [formGroup]="issueInventoryForm" > 
+          <div class="card-body">
+         
+            <div class="row g-3">
+
+              <!-- Serial Numbers -->
+              <div class="col-md-4">
+                <label for="serial_number" class="form-label">Serial Numbers</label>
+                <input id="serial_number" class="form-control" formControlName="serial_number" rows="3" readonly >
+              </div>
+
+              <!-- Category -->
+              <div class="col-md-4">
+                <label for="category" class="form-label">Category</label>
+                <input type="text" id="category" class="form-control" formControlName="category" readonly>
+              </div>
+    
+              <!-- Subcategory -->
+              <div class="col-md-4">
+                <label for="subcategory" class="form-label">Subcategory</label>
+                <input type="text" id="sub_category" class="form-control" formControlName="sub_category" readonly>
+              </div>
+    
+              <!-- Make -->
+              <div class="col-md-4">
+                <label for="make" class="form-label">Make</label>
+                <input type="text" id="make" class="form-control" formControlName="make" readonly>
+              </div>
+    
+              <!-- Model -->
+              <div class="col-md-4">
+                <label for="model" class="form-label">Model</label>
+                <input type="text" id="model" class="form-control" formControlName="model" readonly>                
+              </div>
+    
+              <!-- PO Number -->
+              <div class="col-md-4">
+                <label for="order_id" class="form-label">PO Number</label>
+                <input type="text" id="order_id" class="form-control" formControlName="order_id" readonly>
+              </div>
+    
+                
+              <!-- Receipt Date -->
+              <div class="col-md-4">
+                <label for="receiptDate" class="form-label">Receipt Date</label>
+                <input type="text" id="receipt_date" class="form-control" formControlName="receipt_date" readonly >
+              </div>
+              
+              <!-- Warranty End Date -->
+              <div class="col-md-4">
+                <label for="warrantyEndDate" class="form-label">Warranty End Date</label>
+                <input type="text" id="warranty_expiration" class="form-control" formControlName="warranty_expiration" readonly>
+              </div>
+    
+              <!-- Condition -->
+              <div class="col-md-4">
+                <label for="item_condition" class="form-label">Item Condition</label>
+                <input type="text" id="condition" class="form-control" formControlName="condition" readonly>
+              </div>
+    
+              <!-- Status -->
+              <div class="col-md-4">
+                <label for="status" class="form-label">Item Status</label>
+                <input type="text" id="status" class="form-control" formControlName="status" readonly>
+              </div>
+               
+              <!-- Notes -->
+              <div class="col-md-4">
+                <label for="notes" class="form-label">Item Remark</label>
+                <input type="text" id="notes" class="form-control" formControlName="notes" rows="3" readonly >
+              </div>
+                  
+
+            <!-- Issue Date -->
+            <div class="col-md-4">
+              <label for="issueDate" class="form-label blue-bold-label">Issue Date</label>
+              <input type="date" id="assigned_date" class="form-control" formControlName="assigned_date" required >
+              <div class="invalid-feedback" *ngIf="issueInventoryForm.get('assigned_date')?.hasError('required')">Issue Date is required</div>
+            </div>
+
+           
+
+             <!--Assigned Condition -->
+             <div class="col-md-4">
+              <label for="item_condition" class="form-label blue-bold-label">Assigned Condition</label>
+              <select id="assigned_condition" class="form-select" formControlName="assigned_condition" required>
+                <option *ngFor="let condition of itemCondition" [value]="condition">{{ condition }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="issueInventoryForm.get('assigned_condition')?.hasError('required')">Condition is required</div>
+            </div>
+           
+            <!--Assigned Type  -->
+             <div class="col-md-4">
+              <label for="assigned_type" class="form-label blue-bold-label">Assigned Type</label>
+              <select id="assigned_type" class="form-select" formControlName="assigned_type" required>
+                <option *ngFor="let type of assignedTypes" [value]="type">{{ type }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="issueInventoryForm.get('assigned_type')?.hasError('required')">assigned_type is required</div>
+            </div>
+           <!--enter code of assigned type  -->
+            <div class="col-md-4">
+              <label for="assignee_id" class="form-label blue-bold-label">Employee / Location Code</label>
+              <input type="text" id="assignee_id" class="form-control" formControlName="assignee_id" (blur)="onAssigneeIdChange()">
+            </div>
+                   
+            <!-- assigned person or location details -->
+             <div class="col-md-4">
+              <label for="assigned_to_details" class="form-label blue-bold-label">Employee / Location Detail</label>
+              <input type="text" id="assigned_to_details" class="form-control" formControlName="assigned_to_details" rows="3" readonly >
+            </div>
+
+            <!-- Authority Person Name -->
+            <div class="col-md-4">
+              <label for="issue_person_name" class="form-label blue-bold-label">Authority Person Name</label>
+              <input type="text" id="issue_person_name" class="form-control" formControlName="issue_person_name">
+            </div>
+
+            <!-- Authority Person Code -->
+            <div class="col-md-4">
+              <label for="issue_person_code" class="form-label blue-bold-label">Authority Person Code</label>
+              <input type="text" id="issue_person_code" class="form-control" formControlName="issue_person_code">
+            </div>
+
+               <!-- issue remark -->
+               <div class="col-md-4">
+                <label for="remark" class="form-label blue-bold-label">Issue Remark</label>
+                <input type="text" id="remark" class="form-control" formControlName="remark">
+              </div>
+
+              <div class="file-upload-section col-md-4">
+                <label for="file_upload" class="form-label"> Upload File:(Image/PDF and Size<=1 MB)</label>
+                <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+
+
+          </div>
+        </div>
+          <div class="card-footer d-flex justify-content-between">
+            <!-- <button *ngIf="!printReceipt" mat-raised-button color="primary" type="submit" (click)="onSubmit()">Submit</button> -->
+            <!-- <button *ngIf="printReceipt" mat-raised-button color="primary" type="submit" (click)="onPrintReceipt()">Print Receipt</button>-->
+           
+            <button type="reset" class="btn btn-secondary" (click)="onCancel()">Reset</button>           
+            <button *ngIf="!printReceipt" class="btn btn-primary" [disabled]="issueInventoryForm.invalid" (click)="onSubmit()">Submit</button>
+            <button *ngIf="printReceipt" class="btn btn-primary" (click)="onPrintReceipt()">Print Receipt</button> 
+          </div>        
+          </form>
+        </div>
+      </div>
+  
+    

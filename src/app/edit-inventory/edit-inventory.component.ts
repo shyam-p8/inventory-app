@@ -50,18 +50,16 @@ export class EditInventoryComponent implements OnInit {
     this.editInventoryForm = this.fb.group({
       category: ['', Validators.required],
       sub_category: ['', Validators.required],
-      name: ['', Validators.required],
       make: ['', Validators.required],
       model: ['', Validators.required],
       order_id: ['', Validators.required],
       receipt_date: ['', Validators.required],
       warranty_expiration: ['', Validators.required],
-      location: ['', Validators.required],
       status: ['', Validators.required],
       serial_number: ['', Validators.required],
       condition: ['', Validators.required],
-      notes: ['']
-      
+      price:[''],
+      notes: ['']      
     });
   }
 
@@ -99,7 +97,6 @@ export class EditInventoryComponent implements OnInit {
           }
          }
     });
-
   }
   searchInventory(): void {
     this.inventoryService.getInventoryBySerialNumber(this.searchForm.value.serialNumber).subscribe({
@@ -164,18 +161,4 @@ export class EditInventoryComponent implements OnInit {
    this.route.navigate(['/home/edit-inventory']);
   }
 
-  // onSubmit(): void {
-  //   if (this.inventoryForm.valid) {
-  //     const updatedItem = this.inventoryForm.getRawValue();
-  //     this.inventoryService.updateInventory(updatedItem).subscribe({
-  //       next: (result: any) => {
-  //         alert('Inventory item updated successfully!');
-  //       },
-  //       error: (error) => {
-  //         console.error('Error updating inventory item:', error);
-  //         this.errorMessage = 'An error occurred while updating the inventory item.';
-  //       }
-  //     });
-  //   }
-  // }
 }

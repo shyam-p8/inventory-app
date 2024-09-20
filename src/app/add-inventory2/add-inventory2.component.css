@@ -1,0 +1,15 @@
+.card-header {
+    background-color:  #50cef5;
+    color: white;
+    text-align: center;
+    text-decoration: solid;
+    font-size: large;
+}
+.card-header {
+    padding: 20px 0;  /* Ensures equal padding on the top and bottom */
+  }
+  
+  .card-header h4 {
+    margin: 0;  /* Reset default heading margins for consistency */
+  }
+  

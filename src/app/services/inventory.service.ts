@@ -1,19 +1,19 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { inventoryItem, issueInventory } from '../data-type';
+import { inventoryItem, InventoryReport, issueInventory } from '../data-type';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { API_BASE_URL } from '../constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryService {
    
-  private baseUrl = 'http://10.98.7.218:8000';
-
+ // private baseUrl = 'http://10.98.7.218:8000';
+    private baseUrl=`${API_BASE_URL}`
+  
   constructor(private http: HttpClient, private authService:AuthService) { }
-
-
   submitInventory(itemList: inventoryItem[]): Observable<any> {
     // Prepare the request body
       // Get the access token (you should retrieve this from your authentication service)
@@ -64,22 +64,12 @@ export class InventoryService {
   }
 
   issueInventory(formData: FormData): Observable<any>{
-    // const headers = this.getHeaders();
-    const accessToken = this.authService.getAccessToken(); // Replace with the actual access token
-    // Prepare the headers
-    const headers = new HttpHeaders({
-         'Authorization': `Bearer ${accessToken}`
-    });
-    return this.http.post(`${this.baseUrl}/assignment/issue_equipment/`, formData,{ headers } );
+   const headers = this.getHeaders();
+   return this.http.post(`${this.baseUrl}/assignment/issue_equipment/`, formData,{ headers } );
   }
 
   returnInventory(assigned_id:number,formData: FormData): Observable<any>{
-    // const headers = this.getHeaders();
-    const accessToken = this.authService.getAccessToken(); // Replace with the actual access token
-    // Prepare the headers
-    const headers = new HttpHeaders({
-         'Authorization': `Bearer ${accessToken}`
-    });
+    const headers = this.getHeaders();
     return this.http.put(`${this.baseUrl}/assignment/receive_equipment/${assigned_id}/`, formData,{ headers } );
   }
   getStatusLov(){
@@ -96,15 +86,13 @@ export class InventoryService {
    return this.http.get(`${this.baseUrl}/assignment/get_assignment_list/${assignment_id}`,{ headers});
   }
   getReceiptTemplate(receiptType:string,assignment_id:number){
-    const headers = this.getHeaders();
-   
-    if(receiptType==='receive'){
-   return this.http.get(`${this.baseUrl}/assignment/get_return_slip/${assignment_id}`,{ headers ,  responseType: 'text' });
-    } else(receiptType==='issue')
-    {
-      return this.http.get(`${this.baseUrl}/assignment/get_issue_slip/${assignment_id}`,{ headers ,  responseType: 'text' });
-    } 
+    const headers = this.getHeaders();   
+    const url = receiptType === 'receive' ? `${this.baseUrl}/assignment/get_return_slip/${assignment_id}`:`${this.baseUrl}/assignment/get_issue_slip/${assignment_id}`;
+    return this.http.get(url, { headers, responseType: 'text' });
   }
-  
+  getInventoryReport(){
+    const headers = this.getHeaders();  
+    return this.http.get<InventoryReport[]>(`${this.baseUrl}/equipment/get_equipment_list_with_serializer/`,{ headers})
+    }
 
 }

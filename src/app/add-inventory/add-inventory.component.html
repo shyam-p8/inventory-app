@@ -47,6 +47,10 @@
             <mat-label>PO Number</mat-label>
             <input matInput formControlName="order_id" required>
           </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Purchase Price</mat-label>
+            <input matInput formControlName="price" >
+          </mat-form-field>
           <!-- <mat-form-field appearance="fill">
             <mat-label>Purchase Date</mat-label>
             <input matInput [matDatepicker]="picker1" formControlName="purchaseDate" required>
@@ -99,7 +103,7 @@
       </mat-card-content>
       
       <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit">Add Inventory</button>
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Add Inventory</button>
         <button mat-button type="reset">Reset</button>
       </mat-card-actions>
     </mat-card>

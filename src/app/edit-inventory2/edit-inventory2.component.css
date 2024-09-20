@@ -1,0 +1,33 @@
+/* .search-form, .edit-form {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .input-field {
+    padding: 10px;
+    border-radius: 5px;
+  } */
+
+  .card-header {
+    background-color:  #50cef5;
+    color: white;
+    text-align: center;
+    text-decoration: solid;
+    font-size: large;
+}
+.card-header{
+    /* padding: 20px 0;   */
+  }
+  
+  .card-header h4 {
+    margin: 0;  
+    font-weight: bold; 
+    font-family:  Roboto, sans-serif;;
+    font-size: 1.2em;
+    color:#081e3f
+  }
+
+  .d-flex{
+    padding: 10px;
+  }

@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { inventoryItem } from '../data-type';
@@ -7,9 +6,9 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { InventoryService } from '../services/inventory.service';
 
 @Component({
-  selector: 'app-add-inventory',
-  templateUrl: './add-inventory.component.html',
-  styleUrls: ['./add-inventory.component.css'],
+  selector: 'app-add-inventory2',
+  templateUrl: './add-inventory2.component.html',
+  styleUrls: ['./add-inventory2.component.css'],
   providers: [DatePipe] // Provide DatePipe in the component
 })
 
@@ -17,28 +16,32 @@ import { InventoryService } from '../services/inventory.service';
 //  <p>{{ inventoryForm.value.receiptDate | date: 'yyyy-MM-dd' }}</p>
 
 
-export class AddInventoryComponent implements OnInit{
+
+
+export class AddInventory2Component implements OnInit{
   inventoryForm!: FormGroup;
   categories = [
     {
       name: 'Laptop',
-      subcategories: ['Ultrabook', 'Gaming Laptop', 'Business Laptop', 'Convertible (2-in-1)', 'Netbook']
+      subcategories: ['Notebook', 'Consumer Laptop', 'Business Laptop', 'Compbook', 'Tablet', 'Other']
     },
     {
       name: 'Desktop',
-      subcategories: ['Tower PC', 'All-in-One PC', 'Gaming PC', 'Workstation', 'Mini PC']
+      subcategories: ['All-in-One', 'Workstation','PC (With CPU)', 'Mini PC', 'Other']
     },
     {
       name: 'Monitor',
-      subcategories: ['LED Monitor', 'Gaming Monitor', '4K Monitor', 'Ultrawide Monitor', 'Curved Monitor']
+      subcategories: ['LED Monitor', 'LCD Monitor', '4K Monitor','Other' ]
     },
     {
       name: 'Printer',
-      subcategories: ['Laser Printer', 'Inkjet Printer', 'All-in-One Printer', '3D Printer', 'Dot Matrix Printer']
+      subcategories: ['Laserjet Normal Printer','Laserjet MFP Priter','MFP Printer', 'Inkjet Printer','Line Black & White Printer','Line Colour Printer', 'Barcode Printer',
+        'Scanner', '3D Printer', 'Dot Matrix Printer', 'QR Code Printer','Other']
     },
     {
       name: 'Other',
-      subcategories: ['External Hard Drive', 'Keyboard', 'Mouse', 'Scanner', 'Network Switch', 'UPS']
+      subcategories: [ 'Keyboard', 'Mouse','External Harddisk','RAM', 'Scanner', 'USB', 'UPS','Switch',
+        'Router','Projector', 'Toner','Power Cable', 'Charger']
     }
   ];
   itemCondition :string[]=[];// = ['NEW & WORKING', 'OLD & WORKING', 'NEW & NOT-WORKING'];
@@ -50,23 +53,21 @@ export class AddInventoryComponent implements OnInit{
   ngOnInit(): void {
     this.getLov();
     this.inventoryForm = this.fb.group({
+      category: ['', Validators.required],
+      subcategory: ['', Validators.required],
       make: ['', Validators.required],
       model: ['', Validators.required],
-      category: ['', Validators.required],
-      subcategory: ['', Validators.required], 
-      item_condition: ['', Validators.required],
-      assignment_id:[''],
-      // assignedId: ['', Validators.required],
       order_id: ['', Validators.required],
-      // purchaseDate: ['', Validators.required],
+      price: [null, [Validators.min(0)]],
       receiptDate: ['', Validators.required],
       warrantyEndDate: ['', Validators.required],
-      serialNumbers: ['', Validators.required], // Updated form control for multiple serial numbers
+      item_condition: ['', Validators.required],
       status: ['', Validators.required],
-      notes: [''],
-      price: ['']
+      serialNumbers: [''],
+      notes: ['']
     });
-  }
+   
+   }
 
   getLov(){
     this.inventoryService.getItemConditionLov().subscribe({
@@ -89,6 +90,12 @@ export class AddInventoryComponent implements OnInit{
         if (result) {
          this.statusLov=result.status_list;
          console.warn("status lov=",this.statusLov);
+           // Set the first value of statusLov as the default value for 'status'
+           if (this.statusLov.length > 0) {
+            this.inventoryForm.patchValue({
+              status: this.statusLov[0]  // Set the first item as the default value
+            });
+          }
         }
       },
       error: (error) => {
@@ -102,19 +109,28 @@ export class AddInventoryComponent implements OnInit{
 
   }
 
-  onCategoryChange(categoryName: string): void {
-    const selectedCategory = this.categories.find(category => category.name === categoryName);
-    this.subcategories = selectedCategory ? selectedCategory.subcategories : [];
-    // Reset subcategory selection when category changes
-    this.inventoryForm.get('subcategory')!.setValue('');
+  onCategoryChange(event: Event) {
+    const selectedCategory = (event.target as HTMLSelectElement).value;
+    
+    // Find the category object based on the selected value
+    const category = this.categories.find(cat => cat.name === selectedCategory);
+
+    // If a valid category is selected, update subcategories
+    if (category) {
+      this.subcategories = category.subcategories;
+      this.inventoryForm.get('subcategory')?.reset();  // Reset the subcategory form control when category changes
+    } else {
+      this.subcategories = [];
+    }
+    
   }
   onSubmit(): void {
-    if (this.inventoryForm.valid){       
+    if(this.inventoryForm.valid){  
+      console.log('Form Submitted:', this.inventoryForm.value);
        // Split the serial numbers input into an array by new lines, commas, or spaces
        const serialNumbersArray = this.inventoryForm.value.serialNumbers
        .split(/[\n,\t ]+/)
        .filter((serial: string)=>serial.trim()!=='');
-       const purchaseDate = this.datePipe.transform(this.inventoryForm.value.purchaseDate, 'yyyy-MM-dd');
        const receiptDate = this.datePipe.transform(this.inventoryForm.value.receiptDate, 'yyyy-MM-dd');
        const warrantyEndDate = this.datePipe.transform(this.inventoryForm.value.warrantyEndDate, 'yyyy-MM-dd');
          

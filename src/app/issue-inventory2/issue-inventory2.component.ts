@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryService } from '../services/inventory.service';
-import { Router } from '@angular/router';
-import {  issueInventory } from '../data-type';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-issue-inventory',
-  templateUrl: './issue-inventory.component.html',
-  styleUrls: ['./issue-inventory.component.css']
+  selector: 'app-issue-inventory2',
+  templateUrl: './issue-inventory2.component.html',
+  styleUrls: ['./issue-inventory2.component.css']
 })
-export class IssueInventoryComponent implements OnInit {
+
+export class IssueInventory2Component implements OnInit {
   issueForm: boolean = false
   selectedFile: File | null = null;
   searchForm: FormGroup;
@@ -19,13 +19,13 @@ export class IssueInventoryComponent implements OnInit {
   assignmentCondition :string[]=[];
   issueInventoryForm!: FormGroup;
   errorMessage!: string;
-  assignedTypes = ['Employee', 'Location', 'Other'];
+  assignedTypes = ['','Employee', 'Location', 'Other'];
   itemCondition : string[]=[];
   printReceipt:boolean=false
   constructor(
     private fb: FormBuilder,
     private inventoryService: InventoryService, private datePipe: DatePipe,
-    private route: Router) { this.searchForm = this.fb.group({ serial_number: ['', Validators.required], }) }
+    private route: Router) { this.searchForm = this.fb.group({ serialNumber: ['', Validators.required], }) }
 
   ngOnInit(): void {
     this.getLov();
@@ -35,6 +35,7 @@ export class IssueInventoryComponent implements OnInit {
       make: [''],
       model: [''],
       id: [''],
+      order_id:[''],
       receipt_date: [''],
       warranty_expiration: [''],
       condition:[''],
@@ -48,8 +49,7 @@ export class IssueInventoryComponent implements OnInit {
       assigned_condition: ['', Validators.required],
       remark: [''],
       issue_person_code:[''],
-      issue_person_name:['']
-      
+      issue_person_name:['']      
     });
   }
 
@@ -95,13 +95,13 @@ export class IssueInventoryComponent implements OnInit {
         return; // Exit if file type is not allowed
       }
     }
-
-
   }
   onAssigneeIdChange() {
     const assignee_id = this.issueInventoryForm.get('assignee_id')?.value;
     const assigned_type = this.issueInventoryForm.get('assigned_type')?.value;
     if (assignee_id && assigned_type) {
+      this.issueInventoryForm.patchValue({assigned_to_details:''});
+        // Update other fields with employee/location details
       this.inventoryService.getAssigneeDetails(assigned_type, assignee_id).subscribe({
         next: (result: any) => {
           console.log('Assignee details:', result);
@@ -123,23 +123,27 @@ export class IssueInventoryComponent implements OnInit {
     }
   }
 
-  onSearch() {
-    this.printReceipt=false;
-    this.inventoryService.getInventoryBySerialNumber(this.searchForm.value.serial_number).subscribe({
+  searchInventory() {
+    this.printReceipt=false
+    this.issueInventoryForm.reset();
+    this.inventoryService.getInventoryBySerialNumber(this.searchForm.value.serialNumber).subscribe({
       next: (result: any) => {
         if (result) {
           this.issueInventoryForm.patchValue(result[0]);
           this.issueForm = true;
+          this.searchForm.reset();
           this.errorMessage = '';
         } else {
-          this.issueForm = false;
-          this.errorMessage = 'No inventory item found with this serial number.';
+         this.errorMessage = 'No inventory item found with this serial number.';
         }
       },
       error: (error) => {
+        if(error.status==404){
+          this.errorMessage = 'No inventory item found with this serial number.';
+        }else{
         console.error('Error fetching inventory item:', error);
-        this.issueForm = false;
-        this.errorMessage = 'An error occurred while searching for the inventory item.';
+        this.errorMessage = 'An error occurred while searching item. '+error;
+        }
       }
     });
   }
@@ -158,9 +162,6 @@ export class IssueInventoryComponent implements OnInit {
       formData.append('issue_person_code', this.issueInventoryForm.value.issue_person_code);
       formData.append('issue_person_name', this.issueInventoryForm.value.issue_person_name);
       
-
-
-
       // Safely transform the assigned_date, and handle null/undefined values
       const assignedDateValue = this.issueInventoryForm.value?.assigned_date;
       const formattedDate = assignedDateValue ? this.datePipe.transform(assignedDateValue, 'yyyy-MM-dd') : '';
@@ -178,8 +179,8 @@ export class IssueInventoryComponent implements OnInit {
             this.assignment_id=result.assignment_id;
             this.printReceipt=true;
             alert(result.message);
-          // this.issueInventoryForm.reset();
-          }
+            this.issueInventoryForm.reset();           
+            }
         },
         error: (error: { error: { message: any; }; }) => {
           // Checking if error has a response body with a message
@@ -195,9 +196,8 @@ export class IssueInventoryComponent implements OnInit {
     }
   }
    onCancel(): void {
-    this.issueForm=false;
-    this.printReceipt=false;
-    this.route.navigate(['/home/issue-inventory']);
+   this.printReceipt=false;
+   this.issueInventoryForm.reset();    
    }
 
    onPrintReceipt(){
@@ -211,7 +211,6 @@ export class IssueInventoryComponent implements OnInit {
           printWindow.document.open();
           printWindow.document.write(htmlTemplate);
           printWindow.document.close();
-  
           // Focus and trigger the print
           printWindow.focus();
           printWindow.print();
@@ -226,5 +225,5 @@ export class IssueInventoryComponent implements OnInit {
     });
    }
 
-}
 
+}

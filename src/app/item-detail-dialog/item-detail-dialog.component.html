@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Assignment Details</h1>
+<div mat-dialog-content>
+  <p><strong>Assigned To:</strong> {{data.assignment.assigned_to}}</p>
+  <p><strong>Assigned Type:</strong> {{data.assignment.assigned_type}}</p>
+  <p><strong>Assigned Date:</strong> {{data.assignment.assigned_date | date}}</p>
+  <p><strong>Assigned Details: </strong>{{data.assignment.assigned_to_details}}</p>
+  <p><strong>Assigned Condition:</strong> {{data.assignment.assigned_condition}}</p>  
+  <!-- Add other assignment details as needed -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>
+

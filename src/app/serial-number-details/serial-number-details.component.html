@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>Serial Number: {{data.serial_number}}</h2>
+
+<div mat-dialog-content>
+  <div class="detail-row">
+    <p><strong>Category:</strong> {{data.category}}</p>
+    <p><strong>Sub-Category:</strong> {{data.sub_category}}</p>
+  </div>
+  
+  <div class="detail-row">
+    <p><strong>Make:</strong> {{data.make}}</p>
+    <p><strong>Model:</strong> {{data.model}}</p>
+  </div>
+  
+  <div class="detail-row">
+    <p><strong>Receipt Date:</strong> {{data.receipt_date | date}}</p>
+    <p><strong>Warranty Expiration:</strong> {{data.warranty_expiration | date}}</p>
+  </div>
+
+  <div class="detail-row">
+    <p><strong>Status:</strong> {{data.status}}</p>
+    <p><strong>Condition:</strong> {{data.condition}}</p>
+  </div>
+
+  <div class="detail-row">
+    <p><strong>Price:</strong> {{data.price}}</p>
+    <p><strong>Remark:</strong> {{data.notes}}</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Order details -->
+  <h3>Order Details</h3>
+  <div class="detail-row">
+    <p><strong>PO Number:</strong> {{data.order.po_number}}</p>
+    <p><strong>Project Name:</strong> {{data.order.project_name}}</p>
+  </div>
+
+  <div class="detail-row">
+    <p><strong>Supplier:</strong> {{data.order.supplier_name}}</p>
+    <p><strong>Purchase Date:</strong> {{data.order.purchase_date | date}}</p>
+  </div>
+  <mat-divider></mat-divider>
+  <!-- Assignment details if available -->
+  <ng-container *ngIf="data.assignment">
+    <h3>Assignment Details</h3>
+    <div class="detail-row">
+      <p><strong>Assigned Type:</strong> {{data.assignment.assigned_type}}</p>
+      <p><strong>Assigned To:</strong> {{data.assignment.assigned_to}}</p>
+    </div>
+    <p><strong>Assigned Details:</strong> {{data.assignment.assigned_to_details}}</p>
+    <p><strong>Assigned Date:</strong> {{data.assignment.assigned_date | date}}</p>
+  </ng-container>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>
+
+
+

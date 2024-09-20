@@ -26,6 +26,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { EditInventoryComponent } from './edit-inventory/edit-inventory.component';
 import { IssueInventoryComponent } from './issue-inventory/issue-inventory.component';
 import { ReceiveInventoryComponent } from './receive-inventory/receive-inventory.component';
+import { InventoryReportComponent } from './inventory-report/inventory-report.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { Report1Component } from './report1/report1.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ItemDetailDialogComponent } from './item-detail-dialog/item-detail-dialog.component';
+import { SerialNumberDetailsComponent } from './serial-number-details/serial-number-details.component';
+import { AddInventory2Component } from './add-inventory2/add-inventory2.component';
+import { EditInventory2Component } from './edit-inventory2/edit-inventory2.component';
+import { IssueInventory2Component } from './issue-inventory2/issue-inventory2.component';
+
 
 @NgModule({
   declarations:[
@@ -36,7 +48,14 @@ import { ReceiveInventoryComponent } from './receive-inventory/receive-inventory
     AddInventoryComponent,
     EditInventoryComponent,
     IssueInventoryComponent,
-    ReceiveInventoryComponent 
+    ReceiveInventoryComponent,
+    InventoryReportComponent,
+    Report1Component,
+    ItemDetailDialogComponent,
+    SerialNumberDetailsComponent,
+    AddInventory2Component,
+    EditInventory2Component,
+    IssueInventory2Component 
   ],
   
   imports: [
@@ -59,6 +78,13 @@ import { ReceiveInventoryComponent } from './receive-inventory/receive-inventory
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatDialogModule
     ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

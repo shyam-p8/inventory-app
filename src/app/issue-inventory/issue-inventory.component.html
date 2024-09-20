@@ -35,16 +35,11 @@
 
 
               <mat-form-field class="issue-mat-form-field" appearance="fill">
-
                 <mat-label>Subcategory</mat-label>
                 <input matInput formControlName="sub_category" readonly >
               </mat-form-field>
 
-          <mat-form-field class="issue-mat-form-field" appearance="fill">   
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" readonly >
-          </mat-form-field>
-  
+    
           <mat-form-field class="issue-mat-form-field" appearance="fill">
             <mat-label>Make</mat-label>
             <input matInput formControlName="make" readonly>
@@ -119,24 +114,32 @@
               <mat-option *ngFor="let type of assignedTypes" [value]="type">{{ type }}</mat-option>
             </mat-select>
           </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label class="issue-form-field-bg-color">Remark (if any)</mat-label>
+            <input matInput formControlName="remark">
+            </mat-form-field>
 
           <mat-form-field appearance="fill">
             <mat-label class="issue-form-field-bg-color">Employee / Location Code</mat-label>
-            <input matInput formControlName="assignee_id" (blur)="onAssigneeIdChange()"
-           >
+            <input matInput formControlName="assignee_id" (blur)="onAssigneeIdChange()">
            <!-- (keydown.enter)="onAssigneeIdChange()" -->
-
           </mat-form-field>
 
           <mat-form-field  appearance="fill" class="employee_location_detail">
             <mat-label class="issue-form-field-bg-color">Employee / Location Detail</mat-label>
-            <input matInput formControlName="assigned_name" readonly>
+            <input matInput formControlName="assigned_to_details" readonly>
           </mat-form-field>
           
-          <mat-form-field appearance="fill">
-            <mat-label class="issue-form-field-bg-color">Remark</mat-label>
-            <input matInput formControlName="remark">
-            </mat-form-field>
+      
+
+            <mat-form-field appearance="fill">
+              <mat-label class="issue-form-field-bg-color">Authority Person Name</mat-label>
+              <input matInput formControlName="issue_person_name">
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label class="issue-form-field-bg-color">Authority Person Code</mat-label>
+                <input matInput formControlName="issue_person_code">
+                </mat-form-field>
 
             <div class="file-upload-section">
               <mat-label>Upload File:(Image/PDF and Size<=1 MB)</mat-label>

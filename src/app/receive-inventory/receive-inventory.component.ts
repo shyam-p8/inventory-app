@@ -29,13 +29,11 @@ export class ReceiveInventoryComponent implements OnInit {
     this.receiveInventoryForm = this.fb.group({
       category: [''],
       sub_category: [''],
-      name: [''],
       make: [''],
       model: [''],
       id: [''],
       receipt_date: [''],
       warranty_expiration: [''],
-      location: [''],
       status: [''],
       serial_number: [''],
       notes: [''],
@@ -48,6 +46,8 @@ export class ReceiveInventoryComponent implements OnInit {
       return_date: ['', Validators.required],
       return_condition: ['', Validators.required],
       return_remark: [''],
+      return_person_name:[''],
+      return_person_code:['']
 
     });
   }
@@ -168,6 +168,9 @@ export class ReceiveInventoryComponent implements OnInit {
       // Append form values to FormData
       formData.append('returned_condition', this.receiveInventoryForm.value.return_condition);
       formData.append('notes', this.receiveInventoryForm.value.return_remark);
+      formData.append('return_person_code', this.receiveInventoryForm.value.return_person_code);
+      formData.append('return_person_name', this.receiveInventoryForm.value.return_person_name);
+
       
       // Safely transform the assigned_date, and handle null/undefined values
       const returnedDateValue = this.receiveInventoryForm.value?.return_date;
