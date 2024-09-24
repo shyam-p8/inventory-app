@@ -1,0 +1,8 @@
+  <div class="image-container">
+    <!-- Display the image -->
+    <img *ngIf="data.fileType === 'image'" [src]="data.fileUrl" alt="File Image" class="img-fluid image-viewer" />
+  
+    <!-- Display the PDF -->
+    <iframe *ngIf="data.fileType === 'pdf'" [src]="sanitizedPdfUrl" class="pdf-viewer"></iframe>
+  </div>
+  

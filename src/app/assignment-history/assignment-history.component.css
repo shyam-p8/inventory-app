@@ -1,0 +1,15 @@
+.custom-dialog-container .mat-dialog-container {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+/* Increase specificity and use !important to override Bootstrap */
+.custom-thead {
+  background-color: #50cef5 !important;  /* Apply your theme color */
+  color: white !important;  /* Ensure text color is white for contrast */
+}
+
+.custom-thead th {
+  font-weight: bold !important;  /* Make the headers bold */
+}

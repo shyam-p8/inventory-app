@@ -1,0 +1,43 @@
+
+<div class="container mt-4">    
+     <div class="card-header text-center">
+        <form [formGroup]="searchForm" (ngSubmit)="getAssignmentHistory()">
+            <div class="d-flex justify-content-center">
+            <input type="text" id="serialNumber" class="form-control" formControlName="serialNumber" required placeholder="Enter Serial Number" style="width: 15%;">
+            <button type="submit" class="btn btn-primary ms-2" [disabled]="searchForm.invalid">Search</button>
+          </div>
+          <div><p>{{errorMessage}}</p> </div>
+        </form>     
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-primary">
+        <tr>
+          <th>Issue Date</th>
+          <th>Issue Code</th>
+          <th>Issue Details</th>
+          <th>Issue Condition</th>
+
+          <th>Return Date</th>
+          <th>Returned Condition</th>
+          <th>Issue Letter</th>
+          <th>Return Letter</th>
+         </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of assignmentHistory">
+          <td>{{ record.assigned_date | date:'dd-MM-yyyy' }}</td>
+          <td>{{ record.assigned_to }}</td>
+          <td>{{ record.assigned_to_details }}</td>
+          <td>{{ record.assigned_condition }}</td>
+          <td>{{ record.return_date | date:'dd-MM-yyyy' }}</td>
+          <td>{{ record.returned_condition }}</td>
+          <td>  <button *ngIf="record.letter_for_issue" class="btn btn-primary" (click)="viewLetter(record.letter_for_issue)">View</button></td>
+          <td>  <button *ngIf="record.letter_for_return" class="btn btn-primary" (click)="viewLetter(record.letter_for_return)">View</button></td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

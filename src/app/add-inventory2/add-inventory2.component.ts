@@ -153,9 +153,7 @@ export class AddInventory2Component implements OnInit{
       });
       
       console.log('ItemList Prepared', itemList);
-        // Add your submission logic here (e.g., HTTP request to backend)
-        
-        // Send the itemList to the backend     
+          
         this.inventoryService.submitInventory(itemList).subscribe({
           next: (result: any) => {
            // console.log('Inventory items successfully submitted', result);

@@ -37,6 +37,9 @@ import { SerialNumberDetailsComponent } from './serial-number-details/serial-num
 import { AddInventory2Component } from './add-inventory2/add-inventory2.component';
 import { EditInventory2Component } from './edit-inventory2/edit-inventory2.component';
 import { IssueInventory2Component } from './issue-inventory2/issue-inventory2.component';
+import { ReceiveInventory2Component } from './receive-inventory2/receive-inventory2.component';
+import { AssignmentHistoryComponent } from './assignment-history/assignment-history.component';
+import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 
 
 @NgModule({
@@ -55,7 +58,10 @@ import { IssueInventory2Component } from './issue-inventory2/issue-inventory2.co
     SerialNumberDetailsComponent,
     AddInventory2Component,
     EditInventory2Component,
-    IssueInventory2Component 
+    IssueInventory2Component,
+    ReceiveInventory2Component,
+    AssignmentHistoryComponent,
+    ImageDialogComponent 
   ],
   
   imports: [

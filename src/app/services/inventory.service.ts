@@ -94,5 +94,15 @@ export class InventoryService {
     const headers = this.getHeaders();  
     return this.http.get<InventoryReport[]>(`${this.baseUrl}/equipment/get_equipment_list_with_serializer/`,{ headers})
     }
+    
+    getAssignmentHistory(serialNumber:string){
+      const headers = this.getHeaders();  
+      return this.http.get<any[]>(`${this.baseUrl}/assignment/get_assignment_history/?serial_number=${serialNumber}`,{ headers});
+      }
+
+      getImageApi(imageUrl:string){
+        const headers = this.getHeaders();  
+        return this.http.get(`${this.baseUrl}/utility/download/file/?file_name=${imageUrl}`,{headers,responseType: 'blob'});
+      }
 
 }

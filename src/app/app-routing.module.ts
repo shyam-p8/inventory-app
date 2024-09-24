@@ -13,6 +13,8 @@ import { Report1Component } from './report1/report1.component';
 import { AddInventory2Component } from './add-inventory2/add-inventory2.component';
 import { EditInventory2Component } from './edit-inventory2/edit-inventory2.component';
 import { IssueInventory2Component } from './issue-inventory2/issue-inventory2.component';
+import { ReceiveInventory2Component } from './receive-inventory2/receive-inventory2.component';
+import { AssignmentHistoryComponent } from './assignment-history/assignment-history.component';
 
 const routes: Routes = [
   {
@@ -36,9 +38,11 @@ const routes: Routes = [
       {path:'inventory-report',component:InventoryReportComponent},
       {path:'report1',component:Report1Component},
       // redesign form route
-      { path: 'add-inventory2', component: AddInventory2Component },
-      { path: 'edit-inventory2', component: EditInventory2Component },
+      { path: 'add-inventory2', component:AddInventory2Component },
+      { path: 'edit-inventory2', component:EditInventory2Component },
       {path:'issue-inventory2', component:IssueInventory2Component},
+      {path:'receive-inventory2', component:ReceiveInventory2Component},
+      {path:'assignment-history',component:AssignmentHistoryComponent}
       // { path: '', redirectTo: 'issue-inventory', pathMatch: 'full' },
       // { path: '**', redirectTo: 'issue-inventory' }
     ]     

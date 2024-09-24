@@ -30,10 +30,8 @@ export class IssueInventory2Component implements OnInit {
   ngOnInit(): void {
     this.getLov();
     this.issueInventoryForm = this.fb.group({
-      category: [''],
-      sub_category: [''],
-      make: [''],
-      model: [''],
+      category_subCategory: [''],
+      make_model: [''],
       id: [''],
       order_id:[''],
       receipt_date: [''],
@@ -49,7 +47,8 @@ export class IssueInventory2Component implements OnInit {
       assigned_condition: ['', Validators.required],
       remark: [''],
       issue_person_code:[''],
-      issue_person_name:['']      
+      issue_person_name:[''] ,
+           
     });
   }
 
@@ -129,8 +128,16 @@ export class IssueInventory2Component implements OnInit {
     this.inventoryService.getInventoryBySerialNumber(this.searchForm.value.serialNumber).subscribe({
       next: (result: any) => {
         if (result) {
+          if(result[0].status==='ISSUED'){
+          alert("This item is already issued. you can not issue it.");
+          this.searchForm.reset();
+          return;
+          }
           this.issueInventoryForm.patchValue(result[0]);
-          this.issueForm = true;
+          this.issueInventoryForm.controls['warranty_expiration'].patchValue(this.datePipe.transform(result[0].warranty_expiration, 'dd-MM-yyyy'));
+          this.issueInventoryForm.controls['receipt_date'].patchValue(this.datePipe.transform(result[0].receipt_date, 'dd-MM-yyyy'));
+          this.issueInventoryForm.controls['category_subCategory'].patchValue(result[0].category+"  |  "+result[0].sub_category);
+          this.issueInventoryForm.controls['make_model'].patchValue(result[0].make+"  |  "+result[0].model);
           this.searchForm.reset();
           this.errorMessage = '';
         } else {
