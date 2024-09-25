@@ -14,7 +14,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { AddInventoryComponent } from './add-inventory/add-inventory.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,14 +22,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
-import { EditInventoryComponent } from './edit-inventory/edit-inventory.component';
-import { IssueInventoryComponent } from './issue-inventory/issue-inventory.component';
-import { ReceiveInventoryComponent } from './receive-inventory/receive-inventory.component';
 import { InventoryReportComponent } from './inventory-report/inventory-report.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { Report1Component } from './report1/report1.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ItemDetailDialogComponent } from './item-detail-dialog/item-detail-dialog.component';
 import { SerialNumberDetailsComponent } from './serial-number-details/serial-number-details.component';
@@ -47,13 +42,8 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    NavbarComponent,
-    AddInventoryComponent,
-    EditInventoryComponent,
-    IssueInventoryComponent,
-    ReceiveInventoryComponent,
-    InventoryReportComponent,
-    Report1Component,
+    NavbarComponent,  
+    InventoryReportComponent,  
     ItemDetailDialogComponent,
     SerialNumberDetailsComponent,
     AddInventory2Component,

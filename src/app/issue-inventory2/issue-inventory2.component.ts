@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryService } from '../services/inventory.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-issue-inventory2',
@@ -114,9 +115,15 @@ export class IssueInventory2Component implements OnInit {
             this.issueInventoryForm.patchValue({ assigned_to_details: result.location_name });
           }
         },
-        error: (error) => {
-          console.error('Error fetching assignee details:', error);
-          this.issueInventoryForm.patchValue({ assigned_name: "" });
+        error: (error: { error: { message: any; }; }) => {
+          // Checking if error has a response body with a message
+          if (error.error && error.error.message) {
+            //  console.error('Error submitting inventory:', error.error.message);
+            alert(error.error.message);
+          } else {
+            console.error('Error submitting inventory:', error);
+            alert('An unexpected error occurred.');
+          }
         }
       });
     }
@@ -144,12 +151,14 @@ export class IssueInventory2Component implements OnInit {
          this.errorMessage = 'No inventory item found with this serial number.';
         }
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         if(error.status==404){
-          this.errorMessage = 'No inventory item found with this serial number.';
+          this.errorMessage = error.error.message;
+        }else if(error.status==400){
+          this.errorMessage = error.error.message;
         }else{
-        console.error('Error fetching inventory item:', error);
-        this.errorMessage = 'An error occurred while searching item. '+error;
+        console.error('General Error :', error);
+        this.errorMessage = 'General Error while searching item. '+error.error;
         }
       }
     });

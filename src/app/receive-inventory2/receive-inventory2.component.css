@@ -28,3 +28,24 @@
     font-weight: bold;
   }
   
+
+  /* Default styles for search input type and button larger screens (desktop) */
+  .custom-input-width {
+    width: 15%; /* Adjust this width as needed for desktop */
+  }
+  
+  .custom-button-width {
+    width: auto; /* Button width as required for desktop */
+  }
+  
+  /* Styles for mobile devices */
+  @media (max-width: 768px) {
+    .custom-input-width {
+      width: 60%; /* Adjust this width as needed for mobile */
+    }
+  
+    .custom-button-width {
+      width: 35%; /* Adjust button width as needed for mobile */
+    }
+  }
+  

@@ -3,10 +3,9 @@
      <div class="card-header text-center">
         <form [formGroup]="searchForm" (ngSubmit)="getAssignmentHistory()">
             <div class="d-flex justify-content-center">
-            <input type="text" id="serialNumber" class="form-control" formControlName="serialNumber" required placeholder="Enter Serial Number" style="width: 15%;">
+            <input type="text" id="serialNumber" class="form-control custom-input-width " formControlName="serialNumber" required placeholder="Enter Serial Number" >
             <button type="submit" class="btn btn-primary ms-2" [disabled]="searchForm.invalid">Search</button>
           </div>
-          <div><p>{{errorMessage}}</p> </div>
         </form>     
     </div>
 </div>
@@ -35,9 +34,10 @@
           <td>{{ record.returned_condition }}</td>
           <td>  <button *ngIf="record.letter_for_issue" class="btn btn-primary" (click)="viewLetter(record.letter_for_issue)">View</button></td>
           <td>  <button *ngIf="record.letter_for_return" class="btn btn-primary" (click)="viewLetter(record.letter_for_return)">View</button></td>
-          
+        
         </tr>
       </tbody>
     </table>
   </div>
+  <div class="error-msg"><p>{{errorMessage}}</p> </div>
   

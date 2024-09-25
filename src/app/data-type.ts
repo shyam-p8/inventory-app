@@ -40,29 +40,7 @@ export interface issueInventory{
     notes:string
    
 }
-// export interface inventoryReport{
-// assignment:string,
-// assignment_type:string,
-// assignment_id:number,
-// category:string,
-// condition:string,
-// created_by:string,
-// created_on:Date,
-// id:number,
-// make:string,
-// model:string,
-// notes:string ,
-// orderId:number,
-// po_number:string,
-// price:number,
-// receipt_date:Date,
-// serial_number:string,
-// status:string,
-// sub_category:string, 
-// updated_by:string, 
-// updated_on:Date,
-// warranty_expiration:Date
-// }
+
 export interface Order {
     id: number;
     po_number: string;
@@ -122,4 +100,4 @@ export interface Order {
     updated_on?: string | null;
     assignment?: Assignment | null;
   }
-  
+ 

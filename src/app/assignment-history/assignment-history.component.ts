@@ -30,12 +30,15 @@ export class AssignmentHistoryComponent implements OnInit {
         this.errorMessage = null; // Clear any previous error
       },
       error: (error: HttpErrorResponse) => {
-        console.error('Error fetching inventory item:', error);
-        // Check if the error has a specific error message
-        if (error.status === 404 && error.error?.error) {
-          this.errorMessage = error.error.error; // Capture the error message from the API
-        } else {
-          this.errorMessage = 'An unexpected error occurred.'; // Generic error message
+        console.error('Error fetching Assignment data for this item:', error);
+       // Check if the error has a specific error message
+        if(error.status === 404) {
+          this.errorMessage = error.error.message; // Capture the error message from the API
+        }else if(error.status === 400){
+          this.errorMessage = error.error.message; // Capture the error message from the API
+        }else{
+          this.errorMessage = 'An unexpected error occurred.'+error.error; // Generic error message
+         
         }
       }
     });;

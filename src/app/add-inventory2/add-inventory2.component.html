@@ -38,11 +38,13 @@
               <div class="invalid-feedback" *ngIf="inventoryForm.get('model')?.hasError('required')">Model is required</div>
             </div>
   
-            <!-- PO Number -->
+            <!-- PO Number -->            
             <div class="col-md-6">
-              <label for="order_id" class="form-label">PO Number</label>
-              <input type="text" id="order_id" class="form-control" formControlName="order_id" required>
-              <div class="invalid-feedback" *ngIf="inventoryForm.get('order_id')?.hasError('required')">PO Number is required</div>
+              <label for="po_number" class="form-label">PO Number</label>
+              <select id="po_number" class="form-select" formControlName="po_number" required>
+                <option *ngFor="let poNumber of poNumberList" [value]="poNumber">{{ poNumber }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="inventoryForm.get('item_condition')?.hasError('required')">PO Number is required</div>
             </div>
   
             <!-- Purchase Price -->

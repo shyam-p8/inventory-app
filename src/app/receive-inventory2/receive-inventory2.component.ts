@@ -142,10 +142,12 @@ export class ReceiveInventory2Component implements OnInit {
       error: (error: HttpErrorResponse) => {
         console.error('Error fetching inventory item:', error);
         // Check if the error has a specific error message
-        if (error.status === 404 && error.error?.error) {
-          this.errorMessage = error.error.error; // Capture the error message from the API
+        if (error.status === 404) {
+          this.errorMessage = error.error.message; // Capture the error message from the API
+        }else if (error.status === 400) {
+          this.errorMessage = error.error.message; // Capture the error message from the API
         } else {
-          this.errorMessage = 'An unexpected error occurred.'; // Generic error message
+          this.errorMessage = 'An unexpected error occurred.'+error.error; // Generic error message
         }
       }
     });

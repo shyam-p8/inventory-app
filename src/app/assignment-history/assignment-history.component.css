@@ -1,9 +1,4 @@
-/* .custom-dialog-container .mat-dialog-container {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
+
 /* Increase specificity and use !important to override Bootstrap */
 .custom-thead {
   background-color: #50cef5 !important;  /* Apply your theme color */
@@ -25,6 +20,7 @@
   border-collapse: collapse; /* Ensure no space between borders */
   background-color: #fff; /* Background color */
   border: 1px solid #dee2e6; /* Border around the table */
+  margin-top: 5px;
 }
 
 /* Custom header */
@@ -63,3 +59,33 @@
     overflow-x: scroll;
   }
 }
+
+
+
+  /* Default styles for search input type and button larger screens (desktop) */
+  .custom-input-width {
+    width: 15%; /* Adjust this width as needed for desktop */
+  }
+  
+  .custom-button-width {
+    width: auto; /* Button width as required for desktop */
+  }
+  
+  /* Styles for mobile devices */
+  @media (max-width: 768px) {
+    .custom-input-width {
+      width: 60%; /* Adjust this width as needed for mobile */
+    }
+  
+    .custom-button-width {
+      width: 35%; /* Adjust button width as needed for mobile */
+    }
+  }
+  
+  .error-msg p{
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+    font-size: larger;
+
+  }

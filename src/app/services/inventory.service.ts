@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { inventoryItem, InventoryReport, issueInventory } from '../data-type';
+import { inventoryItem, InventoryReport, issueInventory, Order } from '../data-type';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { API_BASE_URL } from '../constants';
@@ -79,6 +79,11 @@ export class InventoryService {
   getItemConditionLov(){
     const headers = this.getHeaders();
     return this.http.get(`${this.baseUrl}/misc/condition/`,{ headers});
+  }
+  //to get the PO list for LOV 
+  getOrderList(){
+    const headers = this.getHeaders();
+    return this.http.get<Order[]>(`${this.baseUrl}/order/get_order_list/`,{ headers});
   }
 
   getInventoryAssignmentDetail(assignment_id:number){

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryService } from '../services/inventory.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-inventory2',
@@ -144,14 +145,14 @@ export class EditInventory2Component implements OnInit {
           // this.inventoryItem = null;
         }
       },
-      error: (error: { error: { message: any; }; }) => {
+      error: (error: HttpErrorResponse) => {
         // Checking if error has a response body with a message
         if (error.error && error.error.message) {
           //  console.error('Error submitting inventory:', error.error.message);
-          alert(error.error.message);
+          this.errorMessage=error.error.message;
         } else {
-          console.error('Error submitting inventory:', error);
-          alert('An unexpected error occurred.');
+          console.error(error.error);
+          this.errorMessage =error.error;          
         }
       }
     });
@@ -166,8 +167,6 @@ export class EditInventory2Component implements OnInit {
     // Reset the sub_category field after updating subcategories
     this.editInventoryForm.get('sub_category')!.setValue('');
   }
-
-
 
   onSubmit(): void {
     if (this.editInventoryForm.valid) {

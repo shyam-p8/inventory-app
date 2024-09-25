@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { inventoryItem } from '../data-type';
+import { inventoryItem, Order } from '../data-type';
 import { DatePipe } from '@angular/common';  // Import DatePipe
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { InventoryService } from '../services/inventory.service';
@@ -14,9 +14,6 @@ import { InventoryService } from '../services/inventory.service';
 
 // You can also format the date directly in the template if needed: html ,
 //  <p>{{ inventoryForm.value.receiptDate | date: 'yyyy-MM-dd' }}</p>
-
-
-
 
 export class AddInventory2Component implements OnInit{
   inventoryForm!: FormGroup;
@@ -44,10 +41,14 @@ export class AddInventory2Component implements OnInit{
         'Router','Projector', 'Toner','Power Cable', 'Charger']
     }
   ];
-  itemCondition :string[]=[];// = ['NEW & WORKING', 'OLD & WORKING', 'NEW & NOT-WORKING'];
+  itemCondition:string[]=[];// = ['NEW & WORKING', 'OLD & WORKING', 'NEW & NOT-WORKING'];
   assignedTypes = ['Employee', 'Department', 'Project', 'Other'];
   statusLov:string[]=[];
-  subcategories: string[] = [];
+  subcategories: string[]=[];
+  poNumberList :string[]=[];
+  orderList:Order[]=[];
+  selectedOrderId:number | undefined;
+  lovErrorMessage:string='';
   constructor(private fb: FormBuilder,private datePipe: DatePipe, private http:HttpClient, private inventoryService:InventoryService) { }
 
   ngOnInit(): void {
@@ -57,7 +58,7 @@ export class AddInventory2Component implements OnInit{
       subcategory: ['', Validators.required],
       make: ['', Validators.required],
       model: ['', Validators.required],
-      order_id: ['', Validators.required],
+      po_number: ['', Validators.required],
       price: [null, [Validators.min(0)]],
       receiptDate: ['', Validators.required],
       warrantyEndDate: ['', Validators.required],
@@ -80,8 +81,10 @@ export class AddInventory2Component implements OnInit{
       error: (error) => {
         if (error.error && error.error.message) {
          console.warn("error in getting item condition list "+error.error.message);
-        } else {
-          console.error('Error getting status LOV:', error);
+         this.lovErrorMessage=this.lovErrorMessage+" Error in getting Item Condition Lov:"+error.error.message;
+        }else {
+          console.error('An unexpected error occurred getting Item Condition LOV:', error);
+          this.lovErrorMessage=this.lovErrorMessage+" An unexpected error occurred getting Item Condition LOV : "+error.error.message;
           }
          }
     });
@@ -101,11 +104,24 @@ export class AddInventory2Component implements OnInit{
       error: (error) => {
         if (error.error && error.error.message) {
           console.warn("error in getting status list "+error.error.message);
+          this.lovErrorMessage=this.lovErrorMessage+" error in getting status Lov:"+error.error.message;
         } else {
-          console.error('Error getting status LOV:', error);
+          console.error('An unexpected error occurred getting status LOV:', error);
+          this.lovErrorMessage=this.lovErrorMessage+" An unexpected error occurred getting Item Condition LOV : "+error.error.message;
           }
          }
     });
+    //to get PO list for PO Number LOV
+    this.inventoryService.getOrderList().subscribe(
+      (response: Order[]) => {
+        this.orderList = response; // Assign API response to the class property
+        this.poNumberList = this.orderList.map(order => order.po_number);
+      },
+      (error) => {
+        console.error('Error fetching PO Number List', error);
+      }
+    ); 
+
 
   }
 
@@ -126,8 +142,14 @@ export class AddInventory2Component implements OnInit{
   }
   onSubmit(): void {
     if(this.inventoryForm.valid){  
+
       console.log('Form Submitted:', this.inventoryForm.value);
        // Split the serial numbers input into an array by new lines, commas, or spaces
+
+       const selectedPoNumber = this.inventoryForm.get('po_number')?.value;
+       const selectedOrder = this.orderList.find(order => order.po_number === selectedPoNumber);
+       this.selectedOrderId = selectedOrder?.id; 
+               
        const serialNumbersArray = this.inventoryForm.value.serialNumbers
        .split(/[\n,\t ]+/)
        .filter((serial: string)=>serial.trim()!=='');
@@ -139,7 +161,8 @@ export class AddInventory2Component implements OnInit{
           make: this.inventoryForm.value.make,
           model: this.inventoryForm.value.model,
           category: this.inventoryForm.value.category,
-          order_id: this.inventoryForm.value.order_id,
+          //order_id: this.inventoryForm.value.order_id,
+          order_id:this.selectedOrderId,
           receipt_date: receiptDate,
           warranty_expiration: warrantyEndDate,
           serial_number: serialNumber,
