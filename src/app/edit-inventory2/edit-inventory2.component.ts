@@ -144,10 +144,15 @@ export class EditInventory2Component implements OnInit {
           // this.inventoryItem = null;
         }
       },
-      error: (error) => {
-        console.error('Error fetching inventory item:', error);
-        this.errorMessage = 'An error occurred while searching for the inventory item.';
-        this.editForm = false;
+      error: (error: { error: { message: any; }; }) => {
+        // Checking if error has a response body with a message
+        if (error.error && error.error.message) {
+          //  console.error('Error submitting inventory:', error.error.message);
+          alert(error.error.message);
+        } else {
+          console.error('Error submitting inventory:', error);
+          alert('An unexpected error occurred.');
+        }
       }
     });
   }

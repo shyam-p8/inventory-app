@@ -1,4 +1,4 @@
-.custom-dialog-container .mat-dialog-container {
+/* .custom-dialog-container .mat-dialog-container {
     padding: 0;
     margin: 0;
     width: 100%;
@@ -12,4 +12,54 @@
 
 .custom-thead th {
   font-weight: bold !important;  /* Make the headers bold */
+} */
+/* Custom table wrapper for responsiveness */
+.custom-table-responsive {
+  overflow-x: auto;
+  margin: 20px 0; /* Add some margin */
+}
+
+/* Custom table styles */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse; /* Ensure no space between borders */
+  background-color: #fff; /* Background color */
+  border: 1px solid #dee2e6; /* Border around the table */
+}
+
+/* Custom header */
+.custom-table thead {
+  background-color: #50cef5; /* Custom header background */
+  color: #081e3f; /* White text */
+}
+
+/* Custom header font and styles */
+.custom-table thead th {
+  font-weight: bold;
+  padding: 10px; /* Padding for table header */
+  text-align: left;
+  border-bottom: 2px solid #dee2e6; /* Border below header */
+}
+
+/* Custom body rows */
+.custom-table tbody tr {
+  border-bottom: 1px solid #dee2e6; /* Border below each row */
+}
+
+/* Custom cell styles */
+.custom-table tbody td {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Hover effect */
+.custom-table tbody tr:hover {
+  background-color: #f1f1f1; /* Light gray hover background */
+}
+
+/* For smaller screens, ensure table is scrollable */
+@media (max-width: 767px) {
+  .custom-table-responsive {
+    overflow-x: scroll;
+  }
 }

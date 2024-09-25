@@ -27,7 +27,7 @@
   }
   
   .content {
-    margin-top: 0px; /* height of the toolbar */
+    margin-top: 20px; /* height of the toolbar */
     padding: 20px;
   }
   .spacer {
