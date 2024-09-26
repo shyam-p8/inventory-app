@@ -147,7 +147,14 @@ export class EditInventory2Component implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         // Checking if error has a response body with a message
-        if (error.error && error.error.message) {
+        console.error(error.error);
+        if (error.status === 0) {
+          // Handle network error
+          this.errorMessage = 'Network error: Please check your internet connection.';
+        } else if (error.status === 408) {
+          // Handle request timeout
+          this.errorMessage = 'Request timeout: The server took too long to respond.';
+        } else if (error.error && error.error.message) {
           //  console.error('Error submitting inventory:', error.error.message);
           this.errorMessage=error.error.message;
         } else {

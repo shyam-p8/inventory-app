@@ -81,10 +81,10 @@ export class AddInventory2Component implements OnInit{
       error: (error) => {
         if (error.error && error.error.message) {
          console.warn("error in getting item condition list "+error.error.message);
-         this.lovErrorMessage=this.lovErrorMessage+" Error in getting Item Condition Lov:"+error.error.message;
+         this.lovErrorMessage=this.lovErrorMessage+" error in loading lov "+error.error.message;
         }else {
           console.error('An unexpected error occurred getting Item Condition LOV:', error);
-          this.lovErrorMessage=this.lovErrorMessage+" An unexpected error occurred getting Item Condition LOV : "+error.error.message;
+          this.lovErrorMessage=this.lovErrorMessage+" error in loading lov : "+error.error.message;
           }
          }
     });
@@ -103,24 +103,30 @@ export class AddInventory2Component implements OnInit{
       },
       error: (error) => {
         if (error.error && error.error.message) {
-          console.warn("error in getting status list "+error.error.message);
-          this.lovErrorMessage=this.lovErrorMessage+" error in getting status Lov:"+error.error.message;
+          console.warn("error in loading po lov "+error.error.message);
+          this.lovErrorMessage=this.lovErrorMessage+" error in loading lov :"+error.error.message;
         } else {
-          console.error('An unexpected error occurred getting status LOV:', error);
-          this.lovErrorMessage=this.lovErrorMessage+" An unexpected error occurred getting Item Condition LOV : "+error.error.message;
+          console.error('error in loading po lov', error);
+          this.lovErrorMessage=this.lovErrorMessage+" An unexpected error in loading lov : "+error.error.message;
           }
          }
     });
     //to get PO list for PO Number LOV
-    this.inventoryService.getOrderList().subscribe(
-      (response: Order[]) => {
-        this.orderList = response; // Assign API response to the class property
+    this.inventoryService.getOrderList().subscribe({
+      next: (result: Order[]) => {
+       this.orderList = result; // Assign API response to the class property
         this.poNumberList = this.orderList.map(order => order.po_number);
       },
-      (error) => {
-        console.error('Error fetching PO Number List', error);
-      }
-    ); 
+      error: (error) => {
+        if (error.error && error.error.message) {
+          console.warn("error in getting status list "+error.error.message);
+          this.lovErrorMessage=this.lovErrorMessage+" error in loading po lov :"+error.error.message;
+        } else {
+          console.error('An unexpected error occurred getting status LOV:', error);
+          this.lovErrorMessage=this.lovErrorMessage+" An unexpected error in loading po lov : "+error.error.message;
+          }
+         }
+    }); 
 
 
   }
@@ -193,7 +199,7 @@ export class AddInventory2Component implements OnInit{
               alert(error.error.message);
             } else {
               console.error('Error submitting inventory:', error);
-              alert('An unexpected error occurred.');
+              alert('An unexpected error occurred.'+error);
             }
           }
         });

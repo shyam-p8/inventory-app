@@ -142,7 +142,13 @@ export class ReceiveInventory2Component implements OnInit {
       error: (error: HttpErrorResponse) => {
         console.error('Error fetching inventory item:', error);
         // Check if the error has a specific error message
-        if (error.status === 404) {
+        if (error.status === 0) {
+          // Handle network error
+          this.errorMessage = 'Network error: Please check your internet connection.';
+        } else if (error.status === 408) {
+          // Handle request timeout
+          this.errorMessage = 'Request timeout: The server took too long to respond.';
+        } else if (error.status === 404) {
           this.errorMessage = error.error.message; // Capture the error message from the API
         }else if (error.status === 400) {
           this.errorMessage = error.error.message; // Capture the error message from the API
@@ -180,12 +186,20 @@ export class ReceiveInventory2Component implements OnInit {
             alert(result.message);            
           }
         },
-        error: (error: { error: { message: any; }; }) => {
-          if (error.error && error.error.message) {
+        error: (error: HttpErrorResponse) => {
+          console.error('Error in fetching inventory item:', error.error);
+          // Check if the error has a specific error message
+          if (error.status === 0) {
+            // Handle network error
+            alert('Network error: Please check your internet connection.');
+          } else if (error.status === 408) {
+            // Handle request timeout
+            alert('Request timeout: The server took too long to respond.');
+          }else if (error.error && error.error.message) {
             alert(error.error.message);
           } else {
-            console.error('Error submitting inventory:', error);
-            alert('An unexpected error occurred.');
+            console.error('Error submitting inventory:', error.error);
+            alert('An unexpected error occurred.'+error.error);
           }
         }
       });
