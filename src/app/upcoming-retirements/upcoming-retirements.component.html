@@ -1,0 +1,56 @@
+<div class="container mt-4">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm" (input)="search()">
+      </div>
+    </div>
+  
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Employee Code</th>
+          <th>Employee Name</th>
+          <th>Designation</th>
+          <th>Location</th>
+          <th>Date of Birth</th>
+          <th>Date of Retirement</th> 
+          <th>Retire within Month</th>
+          <th>Issue Date</th>
+          <th>Serial Number</th>
+          <th>Category | Subcategory</th>
+          <th>Make | Model</th>
+          <th>Assigned Condition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of paginatedList; let i = index">
+          <td>{{ i + 1 + (currentPage - 1) * itemsPerPage }}</td>
+          <td>{{ employee.assigned_to}}</td>
+          <td>{{ employee.employee_name }}</td>
+          <td>{{ employee.designation }}</td>
+          <td>{{ employee.work_location }}</td>          
+          <td>{{ employee.date_of_birth | date }}</td>
+          <td>{{ getRetirementDate(employee.date_of_birth) }}</td>    
+          <td>{{employee.retire_in_month}}</td>       
+          <td>{{ employee.assigned_date | date }}</td>
+          <td>{{employee.serial_number}}</td>
+          <td>{{employee.category}} | {{employee.sub_category}}</td>
+          <td>{{employee.make}} | {{employee.model}}</td>
+          <td>{{ employee.assigned_condition }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="previousPage()">Previous</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="nextPage()">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  

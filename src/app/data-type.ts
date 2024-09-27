@@ -100,4 +100,37 @@ export interface Order {
     updated_on?: string | null;
     assignment?: Assignment | null;
   }
+  
+  export interface EmployeeRetirement {
+    assigned_condition: string;
+    assigned_date: string;
+    assigned_to: number;
+    assigned_type: string;
+    category: string;
+    date_of_birth: string;
+    designation: string;
+    email_address: string;
+    employee_name: string;
+    employee_number: number;
+    equipment_id: number;
+    id: number;
+    is_retired: boolean;
+    issue_person_code: string;
+    issue_person_name: string;
+    letter_for_issue: string | null;
+    make: string;
+    model: string;
+    notes: string;
+    office: string;
+    oic_name: string;
+    oic_no: number;
+    original_date_of_hire: string;
+    phone_no: string;
+    retire_in_month: number;
+    return_date: string | null;
+    serial_number: string;
+    sub_category: string;
+    user_person_type: string;
+    work_location: string;
+  }
  

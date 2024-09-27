@@ -2,9 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryService } from '../services/inventory.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-edit-inventory2',
@@ -84,11 +84,7 @@ export class EditInventory2Component implements OnInit {
         }
       },
       error: (error) => {
-        if (error.error && error.error.message) {
-          console.warn("error in getting item condition list " + error.error.message);
-        } else {
-          console.error('Error getting status LOV:', error);
-        }
+        this.errorMessage = error.message;
       }
     });
     this.inventoryService.getStatusLov().subscribe({
@@ -99,11 +95,7 @@ export class EditInventory2Component implements OnInit {
         }
       },
       error: (error) => {
-        if (error.error && error.error.message) {
-          console.warn("error in getting status list " + error.error.message);
-        } else {
-          console.error('Error getting status LOV:', error);
-        }
+        this.errorMessage = error.message;
       }
     });
 
@@ -124,7 +116,7 @@ export class EditInventory2Component implements OnInit {
           // Patch sub_category only after subcategories are updated
           setTimeout(() => {
             this.editInventoryForm.controls['sub_category'].patchValue(result[0].sub_category);
-          }, 100);
+          }, 50);
 
 
           // Handle receipt_date and warranty_expiration patching (extract only the date)
@@ -134,10 +126,7 @@ export class EditInventory2Component implements OnInit {
           // Patch the date values into the form controls
           this.editInventoryForm.controls['receipt_date'].patchValue(receipt_date);
           this.editInventoryForm.controls['warranty_expiration'].patchValue(warranty_expiration);
-
-
           console.log("Subcategories loaded:", this.subcategories);
-
           this.errorMessage = '';
         } else {
           this.errorMessage = 'No inventory item found with this serial number.';
@@ -145,22 +134,9 @@ export class EditInventory2Component implements OnInit {
           // this.inventoryItem = null;
         }
       },
-      error: (error: HttpErrorResponse) => {
-        // Checking if error has a response body with a message
-        console.error(error.error);
-        if (error.status === 0) {
-          // Handle network error
-          this.errorMessage = 'Network error: Please check your internet connection.';
-        } else if (error.status === 408) {
-          // Handle request timeout
-          this.errorMessage = 'Request timeout: The server took too long to respond.';
-        } else if (error.error && error.error.message) {
-          //  console.error('Error submitting inventory:', error.error.message);
-          this.errorMessage=error.error.message;
-        } else {
-          console.error(error.error);
-          this.errorMessage =error.error;          
-        }
+      error: (error) => {
+       // this.errorMessage = error.message;
+        alert(error.message);
       }
     });
   }
@@ -187,8 +163,8 @@ export class EditInventory2Component implements OnInit {
           }
         },
         error: (error) => {
-          console.error('Error updating inventory:', error);
-          alert('Failed to update inventory item.');
+          this.errorMessage = error.message;
+          alert(error.message);
         }
       });
     }

@@ -18,15 +18,12 @@ export class LoginComponent {
  
 
   onLogin(data: login) {
-
     this.userService.userLogin(data).subscribe({
       next: (result: any) => {
-        //console.warn(result.accessToken);
         if (result && result.access) {
           // Decode the JWT token to get role and expiration time
           const decodedToken: any = jwtDecode(result.access);
-  
-          console.warn(decodedToken);
+         
           // Extract role and expiration time (exp) from the token
           const role = decodedToken.role;
           const sessionEnd = decodedToken.exp * 1000; // Convert to milliseconds
@@ -36,7 +33,6 @@ export class LoginComponent {
           sessionStorage.setItem('role', role);
           sessionStorage.setItem('username', decodedToken.username); // Assuming username is stored in 'sub'
           sessionStorage.setItem('session_end', sessionEnd.toString());
-  
           console.log('Login successful');
           // Perform any additional logic on successful login
           this.router.navigate(['home']);
@@ -44,20 +40,32 @@ export class LoginComponent {
         } else {
           // Handle case where login response is not as expected
           console.error('Unexpected login response format');
+          alert('Unexpected login response format');
         }
       },
       error: (error) => {
-        console.error('Login failed', error);
-        if (error.status === 400 || error.status === 401) {
+        console.error('Login failed due to error :', error);
+        if (error.status === 400 || error.status === 401){
           // Handle invalid username or password
           alert('Invalid username or password. Please try again.');
-        } else {
-          // Handle other errors
-          alert('An error occurred during login. Please try again later.');
+          }else if (error.status === 0) {
+            // Network error
+            alert('Network/Server error : Please check your internet connection or Server availability');
+          }else if (error.status >= 400 && error.status < 500){
+            // Client-side error
+            if (error.error?.message) {
+             alert(`Client error: ${error.error.message}`);
+            } else {
+              alert('Bad request: Please check the input values.');
+            }
+          }else if (error.status >= 500){
+            // Server-side error
+            alert( 'Server error: Something went wrong on the server. Please try again later.');
+          }else{
+            // Other unexpected errors
+            alert('An unexpected error occurred. Please try again.');
+          }   
         }
-      }
-    });
+      });
   }
-  
-
 }

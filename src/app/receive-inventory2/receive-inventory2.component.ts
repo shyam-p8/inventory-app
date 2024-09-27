@@ -65,12 +65,8 @@ export class ReceiveInventory2Component implements OnInit {
         }
       },
       error: (error) => {
-        if (error.error && error.error.message) {
-          console.warn("error in getting item condition list " + error.error.message);
-        } else {
-          console.error('Error getting status LOV:', error);
-        }
-      }
+        this.errorMessage=error.message;
+       }     
     });
 
   }
@@ -139,23 +135,9 @@ export class ReceiveInventory2Component implements OnInit {
           this.errorMessage = 'No inventory item found with this serial number.';
         }
       },
-      error: (error: HttpErrorResponse) => {
-        console.error('Error fetching inventory item:', error);
-        // Check if the error has a specific error message
-        if (error.status === 0) {
-          // Handle network error
-          this.errorMessage = 'Network error: Please check your internet connection.';
-        } else if (error.status === 408) {
-          // Handle request timeout
-          this.errorMessage = 'Request timeout: The server took too long to respond.';
-        } else if (error.status === 404) {
-          this.errorMessage = error.error.message; // Capture the error message from the API
-        }else if (error.status === 400) {
-          this.errorMessage = error.error.message; // Capture the error message from the API
-        } else {
-          this.errorMessage = 'An unexpected error occurred.'+error.error; // Generic error message
-        }
-      }
+      error: (error) => {
+        this.errorMessage=error.message;
+       }     
     });
   }
 
@@ -186,22 +168,10 @@ export class ReceiveInventory2Component implements OnInit {
             alert(result.message);            
           }
         },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error in fetching inventory item:', error.error);
-          // Check if the error has a specific error message
-          if (error.status === 0) {
-            // Handle network error
-            alert('Network error: Please check your internet connection.');
-          } else if (error.status === 408) {
-            // Handle request timeout
-            alert('Request timeout: The server took too long to respond.');
-          }else if (error.error && error.error.message) {
-            alert(error.error.message);
-          } else {
-            console.error('Error submitting inventory:', error.error);
-            alert('An unexpected error occurred.'+error.error);
-          }
-        }
+        error: (error) => {
+          this.errorMessage=error.message;
+          alert(error.message);
+         }     
       });
     }   
     
@@ -232,9 +202,9 @@ export class ReceiveInventory2Component implements OnInit {
           alert('Error: Could not retrieve receipt template.');
         }
       },
-      error: (err: any) => {
-        console.error('Error retrieving receipt template:', err);
-      }
+      error: (error) => {
+        this.errorMessage=error.message;
+       }     
     });
   }
 

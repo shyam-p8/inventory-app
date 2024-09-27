@@ -17,38 +17,17 @@ import { InventoryService } from '../services/inventory.service';
 
 export class AddInventory2Component implements OnInit{
   inventoryForm!: FormGroup;
-  categories = [
-    {
-      name: 'Laptop',
-      subcategories: ['Notebook', 'Consumer Laptop', 'Business Laptop', 'Compbook', 'Tablet', 'Other']
-    },
-    {
-      name: 'Desktop',
-      subcategories: ['All-in-One', 'Workstation','PC (With CPU)', 'Mini PC', 'Other']
-    },
-    {
-      name: 'Monitor',
-      subcategories: ['LED Monitor', 'LCD Monitor', '4K Monitor','Other' ]
-    },
-    {
-      name: 'Printer',
-      subcategories: ['Laserjet Normal Printer','Laserjet MFP Priter','MFP Printer', 'Inkjet Printer','Line Black & White Printer','Line Colour Printer', 'Barcode Printer',
-        'Scanner', '3D Printer', 'Dot Matrix Printer', 'QR Code Printer','Other']
-    },
-    {
-      name: 'Other',
-      subcategories: [ 'Keyboard', 'Mouse','External Harddisk','RAM', 'Scanner', 'USB', 'UPS','Switch',
-        'Router','Projector', 'Toner','Power Cable', 'Charger']
-    }
-  ];
+  categories:string[]=[];
   itemCondition:string[]=[];// = ['NEW & WORKING', 'OLD & WORKING', 'NEW & NOT-WORKING'];
   assignedTypes = ['Employee', 'Department', 'Project', 'Other'];
   statusLov:string[]=[];
   subcategories: string[]=[];
+  //categoryLov: string[]=[];
+ // subcategoryLov: string[]=[];
   poNumberList :string[]=[];
   orderList:Order[]=[];
   selectedOrderId:number | undefined;
-  lovErrorMessage:string='';
+  errorMessage:string='';
   constructor(private fb: FormBuilder,private datePipe: DatePipe, private http:HttpClient, private inventoryService:InventoryService) { }
 
   ngOnInit(): void {
@@ -79,14 +58,8 @@ export class AddInventory2Component implements OnInit{
         }
       },
       error: (error) => {
-        if (error.error && error.error.message) {
-         console.warn("error in getting item condition list "+error.error.message);
-         this.lovErrorMessage=this.lovErrorMessage+" error in loading lov "+error.error.message;
-        }else {
-          console.error('An unexpected error occurred getting Item Condition LOV:', error);
-          this.lovErrorMessage=this.lovErrorMessage+" error in loading lov : "+error.error.message;
-          }
-         }
+       this.errorMessage=error.message;
+      }     
     });
     this.inventoryService.getStatusLov().subscribe({
       next: (result: any) => {
@@ -100,16 +73,9 @@ export class AddInventory2Component implements OnInit{
             });
           }
         }
-      },
-      error: (error) => {
-        if (error.error && error.error.message) {
-          console.warn("error in loading po lov "+error.error.message);
-          this.lovErrorMessage=this.lovErrorMessage+" error in loading lov :"+error.error.message;
-        } else {
-          console.error('error in loading po lov', error);
-          this.lovErrorMessage=this.lovErrorMessage+" An unexpected error in loading lov : "+error.error.message;
-          }
-         }
+      },error: (error) => {
+        this.errorMessage=error.message;
+       }          
     });
     //to get PO list for PO Number LOV
     this.inventoryService.getOrderList().subscribe({
@@ -118,28 +84,41 @@ export class AddInventory2Component implements OnInit{
         this.poNumberList = this.orderList.map(order => order.po_number);
       },
       error: (error) => {
-        if (error.error && error.error.message) {
-          console.warn("error in getting status list "+error.error.message);
-          this.lovErrorMessage=this.lovErrorMessage+" error in loading po lov :"+error.error.message;
-        } else {
-          console.error('An unexpected error occurred getting status LOV:', error);
-          this.lovErrorMessage=this.lovErrorMessage+" An unexpected error in loading po lov : "+error.error.message;
-          }
-         }
+        this.errorMessage=error.message;
+       }     
     }); 
 
-
+    this.inventoryService.getCategoryLov().subscribe({
+      next: (result:any) => {
+        this.categories=result.category_list;        
+        console.warn("category lov: ",this.categories);      
+      },
+      error: (error) => {
+        this.errorMessage=error.message;
+       }     
+    }); 
+  }
+  getSubcategoryLov(category:string){
+    this.inventoryService.getSubCategoryLov(category).subscribe({
+      next: (result: any) => {
+        this.subcategories=result.subcategory_list
+        console.warn("subcategory lov: ",this.subcategories);
+      },
+      error: (error) => {
+        this.errorMessage=error.message;
+       }     
+    });
   }
 
   onCategoryChange(event: Event) {
     const selectedCategory = (event.target as HTMLSelectElement).value;
     
     // Find the category object based on the selected value
-    const category = this.categories.find(cat => cat.name === selectedCategory);
-
+   // const category = this.categories.find(cat => cat.name === selectedCategory);
+      
     // If a valid category is selected, update subcategories
-    if (category) {
-      this.subcategories = category.subcategories;
+    if (selectedCategory) {
+      this.getSubcategoryLov(selectedCategory);
       this.inventoryForm.get('subcategory')?.reset();  // Reset the subcategory form control when category changes
     } else {
       this.subcategories = [];
@@ -193,15 +172,9 @@ export class AddInventory2Component implements OnInit{
             }
           },
           error: (error) => {
-            // Checking if error has a response body with a message
-            if (error.error && error.error.message) {
-            //  console.error('Error submitting inventory:', error.error.message);
-              alert(error.error.message);
-            } else {
-              console.error('Error submitting inventory:', error);
-              alert('An unexpected error occurred.'+error);
-            }
-          }
+            this.errorMessage=error.message;
+            alert(error.message);
+           }     
         });
     }      
   }

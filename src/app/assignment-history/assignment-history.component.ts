@@ -29,18 +29,10 @@ export class AssignmentHistoryComponent implements OnInit {
         console.log('Inventory item fetched successfully:', result);
         this.errorMessage = null; // Clear any previous error
       },
-      error: (error: HttpErrorResponse) => {
-        console.error('Error fetching Assignment data for this item:', error);
-       // Check if the error has a specific error message
-        if(error.status === 404) {
-          this.errorMessage = error.error.message; // Capture the error message from the API
-        }else if(error.status === 400){
-          this.errorMessage = error.error.message; // Capture the error message from the API
-        }else{
-          this.errorMessage = 'An unexpected error occurred.'+error.error; // Generic error message
-         
-        }
-      }
+      error: (error) => {
+        // Display error message returned by the centralized error handling service in inventory service
+        this.errorMessage=error.message;
+      }     
     });;
    }
 
@@ -68,8 +60,10 @@ export class AssignmentHistoryComponent implements OnInit {
           }
         },
         error: (error) => {
-          console.error('Error fetching the file:', error);
-        }
+          // Display error message returned by the centralized error handling service in inventory service
+          this.errorMessage=error.message;
+          console.warn("error in getting file:"+error.message)
+        }     
       });
     }
     openDialog(fileUrl: string, fileType: string): void {

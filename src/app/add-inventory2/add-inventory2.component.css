@@ -17,3 +17,9 @@
     font-size: 1.2em;
     color:#081e3f
   }
+  .error-msg p{
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+    font-size: larger;
+  }

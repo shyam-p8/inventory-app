@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,NO_ERRORS_SCHEMA  } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +35,10 @@ import { IssueInventory2Component } from './issue-inventory2/issue-inventory2.co
 import { ReceiveInventory2Component } from './receive-inventory2/receive-inventory2.component';
 import { AssignmentHistoryComponent } from './assignment-history/assignment-history.component';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
+import { UpcomingRetirementsComponent } from './upcoming-retirements/upcoming-retirements.component';
+
+
+
 
 
 @NgModule({
@@ -51,7 +55,8 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
     IssueInventory2Component,
     ReceiveInventory2Component,
     AssignmentHistoryComponent,
-    ImageDialogComponent 
+    ImageDialogComponent,
+    UpcomingRetirementsComponent,      
   ],
   
   imports: [
@@ -80,8 +85,10 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    
     ],
+   // schemas: [NO_ERRORS_SCHEMA], // Add this line
   providers: [DatePipe],
   bootstrap: [AppComponent]
 })

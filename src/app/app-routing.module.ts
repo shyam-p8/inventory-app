@@ -10,6 +10,7 @@ import { EditInventory2Component } from './edit-inventory2/edit-inventory2.compo
 import { IssueInventory2Component } from './issue-inventory2/issue-inventory2.component';
 import { ReceiveInventory2Component } from './receive-inventory2/receive-inventory2.component';
 import { AssignmentHistoryComponent } from './assignment-history/assignment-history.component';
+import { UpcomingRetirementsComponent } from './upcoming-retirements/upcoming-retirements.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,7 @@ const routes: Routes = [
       {path:'receive-inventory2', component:ReceiveInventory2Component},
       {path:'assignment-history',component:AssignmentHistoryComponent},
       {path:'inventory-report',component:InventoryReportComponent},
+      {path:'upcoming-retirements',component:UpcomingRetirementsComponent},
       
     ]     
   },

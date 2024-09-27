@@ -3,7 +3,7 @@
       <div class="card">
         <div class="card-header text-center">
           <h4>Add Inventory Form</h4>
-          <p *ngIf="lovErrorMessage">lovErrorMessage</p>
+          <p class="error-msg" *ngIf="errorMessage">{{errorMessage}}</p>
         </div>
         <div class="card-body">
           <div class="row g-3">
@@ -11,7 +11,7 @@
             <div class="col-md-6">
               <label for="category" class="form-label">Category</label>
               <select id="category" class="form-select" formControlName="category" (change)="onCategoryChange($event)" required>
-                <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+                <option *ngFor="let category of categories" [value]="category">{{ category}}</option>
               </select>
               <div class="invalid-feedback" *ngIf="inventoryForm.get('category')?.hasError('required')">Category is required</div>
             </div>

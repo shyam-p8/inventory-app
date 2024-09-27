@@ -62,16 +62,16 @@ export class InventoryReportComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
     getInventoryReport(){
-      this.inventoryService.getInventoryReport().subscribe(
+      this.inventoryService.getInventoryReport().subscribe({next:
         (response: InventoryReport[]) => {
           this.inventoryReports = response; // Assign API response to the class property
           console.warn("Inventory list =", this.inventoryReports); 
           this.dataSource.data = this.inventoryReports;
         },
-        (error) => {
-          console.error('Error fetching data', error);
-        }
-      ); 
+        error: (error) => {
+          alert(error.message);
+         } 
+        }); 
     }
 
   applyFilter(event: Event) {

@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { inventoryItem, InventoryReport, issueInventory, Order } from '../data-type';
-import { Observable } from 'rxjs';
+import { EmployeeRetirement, inventoryItem, InventoryReport, issueInventory, Order } from '../data-type';
+import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { API_BASE_URL } from '../constants';
 
@@ -24,7 +24,8 @@ export class InventoryService {
       'Authorization': `Bearer ${accessToken}`
     });
     // Make the HTTP POST request
-    return this.http.post(this.baseUrl+'/equipment/create_equipment_list/', itemList, { headers });
+    return this.http.post(this.baseUrl+'/equipment/create_equipment_list/', itemList, { headers })
+    .pipe(catchError(this.handleError));
   }
 
 
@@ -36,7 +37,8 @@ export class InventoryService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`
     });
-    return this.http.get(`${this.baseUrl}/equipment/get_equipment_list/?serial_number=${serialNumber}`, { headers } );
+    return this.http.get(`${this.baseUrl}/equipment/get_equipment_list/?serial_number=${serialNumber}`, { headers })
+    .pipe(catchError(this.handleError));
   }
 
   updateInventory(inventoryId:number,inventoryItem: inventoryItem): Observable<any> {
@@ -46,13 +48,13 @@ export class InventoryService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`
     });
-    console.warn(`${this.baseUrl}/equipment/update_equipment/${inventoryId}/`);
-    return this.http.put(`${this.baseUrl}/equipment/update_equipment/${inventoryId}/`, inventoryItem, { headers } );
+    return this.http.put(`${this.baseUrl}/equipment/update_equipment/${inventoryId}/`,inventoryItem, { headers })
+    .pipe(catchError(this.handleError));
   }
 
-  getAssigneeDetails(assignedType: string, assigneeId: number) {
+  getAssigneeDetails(assignedType: string, assigneeId: number) : Observable<any>{
     const headers = this.getHeaders();
-    return this.http.get(`${this.baseUrl}/assignee/${assignedType}/${assigneeId}/`, { headers } );
+    return this.http.get(`${this.baseUrl}/assignee/${assignedType}/${assigneeId}/`, { headers }).pipe(catchError(this.handleError));
   }
 
   getHeaders(){
@@ -65,49 +67,99 @@ export class InventoryService {
 
   issueInventory(formData: FormData): Observable<any>{
    const headers = this.getHeaders();
-   return this.http.post(`${this.baseUrl}/assignment/issue_equipment/`, formData,{ headers } );
+   return this.http.post(`${this.baseUrl}/assignment/issue_equipment/`, formData,{ headers }).pipe(catchError(this.handleError));
   }
 
   returnInventory(assigned_id:number,formData: FormData): Observable<any>{
     const headers = this.getHeaders();
-    return this.http.put(`${this.baseUrl}/assignment/receive_equipment/${assigned_id}/`, formData,{ headers } );
+    return this.http.put(`${this.baseUrl}/assignment/receive_equipment/${assigned_id}/`, formData,{ headers }).pipe(catchError(this.handleError));
   }
-  getStatusLov(){
+  getStatusLov() : Observable<any>{
     const headers = this.getHeaders();
-    return this.http.get(`${this.baseUrl}/misc/status/`,{ headers});
+    return this.http.get(`${this.baseUrl}/misc/status/`,{ headers}).pipe(catchError(this.handleError));
   }
-  getItemConditionLov(){
+  getItemConditionLov() : Observable<any>{
     const headers = this.getHeaders();
-    return this.http.get(`${this.baseUrl}/misc/condition/`,{ headers});
+    return this.http.get(`${this.baseUrl}/misc/condition/`,{ headers}).pipe(catchError(this.handleError));
   }
-  //to get the PO list for LOV 
-  getOrderList(){
-    const headers = this.getHeaders();
-    return this.http.get<Order[]>(`${this.baseUrl}/order/get_order_list/`,{ headers});
-  }
+ 
+ // Get list of orders for po number lov
+ getOrderList(): Observable<Order[]> {
+  const headers = this.getHeaders();
+  return this.http.get<Order[]>(`${this.baseUrl}/order/get_order_list/`, { headers }).pipe(catchError(this.handleError));
+}
 
-  getInventoryAssignmentDetail(assignment_id:number){
-    const headers = this.getHeaders();
-   return this.http.get(`${this.baseUrl}/assignment/get_assignment_list/${assignment_id}`,{ headers});
-  }
-  getReceiptTemplate(receiptType:string,assignment_id:number){
-    const headers = this.getHeaders();   
-    const url = receiptType === 'receive' ? `${this.baseUrl}/assignment/get_return_slip/${assignment_id}`:`${this.baseUrl}/assignment/get_issue_slip/${assignment_id}`;
-    return this.http.get(url, { headers, responseType: 'text' });
-  }
-  getInventoryReport(){
-    const headers = this.getHeaders();  
-    return this.http.get<InventoryReport[]>(`${this.baseUrl}/equipment/get_equipment_list_with_serializer/`,{ headers})
+// Get inventory assignment details
+getInventoryAssignmentDetail(assignment_id: number): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.get(`${this.baseUrl}/assignment/get_assignment_list/${assignment_id}`, { headers }).pipe(catchError(this.handleError));
     }
+
+// Get receipt template
+getReceiptTemplate(receiptType: string, assignment_id: number): Observable<string> {
+  const headers = this.getHeaders();
+  const url = receiptType === 'receive' 
+    ? `${this.baseUrl}/assignment/get_return_slip/${assignment_id}` 
+    : `${this.baseUrl}/assignment/get_issue_slip/${assignment_id}`;
+  
+  return this.http.get(url, { headers, responseType: 'text' }).pipe(catchError(this.handleError));
+}
+
+// Get inventory report
+getInventoryReport(): Observable<InventoryReport[]> {
+  const headers = this.getHeaders();
+  return this.http.get<InventoryReport[]>(`${this.baseUrl}/equipment/get_equipment_list_with_serializer/`, { headers })
+    .pipe(catchError(this.handleError));
+}
+
     
-    getAssignmentHistory(serialNumber:string){
+    getAssignmentHistory(serialNumber:string): Observable<any>{
       const headers = this.getHeaders();  
-      return this.http.get<any[]>(`${this.baseUrl}/assignment/get_assignment_history/?serial_number=${serialNumber}`,{ headers});
+      return this.http.get<any[]>(`${this.baseUrl}/assignment/get_assignment_history/?serial_number=${serialNumber}`,{ headers})
+      .pipe(catchError(this.handleError) // Add centralized error handling
+      );
       }
 
-      getImageApi(imageUrl:string){
+      getImageApi(imageUrl:string): Observable<any>{
         const headers = this.getHeaders();  
         return this.http.get(`${this.baseUrl}/utility/download/file/?file_name=${imageUrl}`,{headers,responseType: 'blob'});
       }
 
+      getEmployeeRetirementList() : Observable<EmployeeRetirement[]>{
+        const headers = this.getHeaders();  
+        return this.http.get<EmployeeRetirement[]>(`${this.baseUrl}/assignment/retirement_report/`,{ headers}).pipe(catchError(this.handleError));
+      }
+
+      getCategoryLov() : Observable<any[]>{
+        const headers = this.getHeaders();  
+        return this.http.get<any[]>(`${this.baseUrl}/misc/category/`,{ headers}).pipe(catchError(this.handleError));
+      }
+      getSubCategoryLov(category:string) : Observable<any[]>{
+        const headers = this.getHeaders();  
+        return this.http.get<any[]>(`${this.baseUrl}/misc/subcategory/${category}/`,{ headers}).pipe(catchError(this.handleError));
+      }
+
+  // Centralized error handling method
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = '';
+    if (error.status === 0) {
+      // Network error
+      errorMessage = 'Network/Server error : Please check your internet connection or Server availability';
+    } else if (error.status >= 400 && error.status < 500) {
+      // Client-side error
+      if (error.error?.message) {
+        errorMessage = `Client error: ${error.error.message}`;
+      } else {
+        errorMessage = 'Bad request: Please check the input values.';
+      }
+    } else if (error.status >= 500) {
+      // Server-side error
+      errorMessage = 'Server error: Something went wrong on the server. Please try again later.';
+    } else {
+      // Other unexpected errors
+      errorMessage = 'An unexpected error occurred. Please try again.';
+    }
+    console.error('Error occurred:', errorMessage);
+    return throwError(() => new Error(errorMessage));
+  }
 }
