@@ -18,12 +18,10 @@ import { InventoryService } from '../services/inventory.service';
 export class AddInventory2Component implements OnInit{
   inventoryForm!: FormGroup;
   categories:string[]=[];
-  itemCondition:string[]=[];// = ['NEW & WORKING', 'OLD & WORKING', 'NEW & NOT-WORKING'];
+  itemCondition:string[]=[];
   assignedTypes = ['Employee', 'Department', 'Project', 'Other'];
   statusLov:string[]=[];
   subcategories: string[]=[];
-  //categoryLov: string[]=[];
- // subcategoryLov: string[]=[];
   poNumberList :string[]=[];
   orderList:Order[]=[];
   selectedOrderId:number | undefined;
@@ -112,12 +110,7 @@ export class AddInventory2Component implements OnInit{
 
   onCategoryChange(event: Event) {
     const selectedCategory = (event.target as HTMLSelectElement).value;
-    
-    // Find the category object based on the selected value
-   // const category = this.categories.find(cat => cat.name === selectedCategory);
-      
-    // If a valid category is selected, update subcategories
-    if (selectedCategory) {
+     if (selectedCategory) {
       this.getSubcategoryLov(selectedCategory);
       this.inventoryForm.get('subcategory')?.reset();  // Reset the subcategory form control when category changes
     } else {

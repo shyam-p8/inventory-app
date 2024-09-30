@@ -19,31 +19,8 @@ export class EditInventory2Component implements OnInit {
   serialNumber: string = '';
   errorMessage: string = '';
   editInventoryForm: FormGroup;
-  searchForm: FormGroup
-  categories = [
-    {
-      name: 'Laptop',
-      subcategories: ['Notebook', 'Consumer Laptop', 'Business Laptop', 'Compbook', 'Tablet', 'Other']
-    },
-    {
-      name: 'Desktop',
-      subcategories: ['All-in-One', 'Workstation', 'PC (With CPU)', 'Mini PC', 'Other']
-    },
-    {
-      name: 'Monitor',
-      subcategories: ['LED Monitor', 'LCD Monitor', '4K Monitor', 'Other']
-    },
-    {
-      name: 'Printer',
-      subcategories: ['Laserjet Normal Printer', 'Laserjet MFP Priter', 'MFP Printer', 'Inkjet Printer', 'Line Black & White Printer', 'Line Colour Printer', 'Barcode Printer',
-        'Scanner', '3D Printer', 'Dot Matrix Printer', 'QR Code Printer', 'Other']
-    },
-    {
-      name: 'Other',
-      subcategories: ['Keyboard', 'Mouse', 'External Harddisk', 'RAM', 'Scanner', 'USB', 'UPS', 'Switch',
-        'Router', 'Projector', 'Toner', 'Power Cable', 'Charger']
-    }
-  ];
+  searchForm: FormGroup;
+  categories:string[]=[];
   subcategories: string[] = [];
   itemCondition: string[] = [];
   statusLov: string[] = [];
@@ -98,6 +75,15 @@ export class EditInventory2Component implements OnInit {
         this.errorMessage = error.message;
       }
     });
+    this.inventoryService.getCategoryLov().subscribe({
+      next: (result:any) => {
+        this.categories=result.category_list;        
+        console.warn("category lov: ",this.categories);      
+      },
+      error: (error) => {
+        this.errorMessage=error.message;
+       }     
+    }); 
 
   }
   searchInventory(): void {
@@ -140,15 +126,26 @@ export class EditInventory2Component implements OnInit {
       }
     });
   }
+
+  getSubcategoryLov(category:string){
+    this.inventoryService.getSubCategoryLov(category).subscribe({
+      next: (result: any) => {
+        this.subcategories=result.subcategory_list
+        console.warn("subcategory lov: ",this.subcategories);
+      },
+      error: (error) => {
+        this.errorMessage=error.message;
+       }     
+    });
+  }
   onCategoryChange(event: Event) {
-    const categoryName = (event.target as HTMLSelectElement).value;
-    const selectedCategory = this.categories.find(category => category.name === categoryName);
-
-    // Update the subcategories array based on the selected category
-    this.subcategories = selectedCategory ? selectedCategory.subcategories : [];
-
-    // Reset the sub_category field after updating subcategories
-    this.editInventoryForm.get('sub_category')!.setValue('');
+    const selectedCategory = (event.target as HTMLSelectElement).value;
+    if (selectedCategory) {
+      this.getSubcategoryLov(selectedCategory);
+      this.editInventoryForm.get('subcategory')?.reset();  // Reset the subcategory form control when category changes
+    } else {
+      this.subcategories = [];
+    }
   }
 
   onSubmit(): void {
