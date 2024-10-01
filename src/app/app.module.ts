@@ -36,6 +36,7 @@ import { ReceiveInventory2Component } from './receive-inventory2/receive-invento
 import { AssignmentHistoryComponent } from './assignment-history/assignment-history.component';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 import { UpcomingRetirementsComponent } from './upcoming-retirements/upcoming-retirements.component';
+import { BarcodeComponent } from './barcode/barcode.component';
 
 
 
@@ -56,7 +57,8 @@ import { UpcomingRetirementsComponent } from './upcoming-retirements/upcoming-re
     ReceiveInventory2Component,
     AssignmentHistoryComponent,
     ImageDialogComponent,
-    UpcomingRetirementsComponent,      
+    UpcomingRetirementsComponent,
+    BarcodeComponent,      
   ],
   
   imports: [

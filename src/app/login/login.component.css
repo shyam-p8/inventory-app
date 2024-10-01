@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-image: url('src/assets/Onsite_Inventory.jpg'); /* Replace with the correct image path */
+  background-image: url('src/assets/login-background.jpg'); /* Replace with the correct image path */
   background-size: cover; /* Ensures the image covers the whole screen */
   background-position: center; /* Centers the background image */
   background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -194,3 +194,4 @@ button {
     height: 30px;
   }
 }
+
