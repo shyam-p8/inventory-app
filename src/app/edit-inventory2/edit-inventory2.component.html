@@ -6,7 +6,7 @@
           <form [formGroup]="searchForm" (ngSubmit)="searchInventory()">
             <h4>Edit Inventory Form</h4>
             <div class="d-flex justify-content-center">
-              <input type="text" id="serialNumber" class="form-control custom-input-width" formControlName="serialNumber" required >
+              <input type="text" id="serialNumber" class="form-control custom-input-width" formControlName="serialNumber" required (keydown.enter)="searchInventory()" #barcodeInput>
               <button type="submit" class="btn btn-primary ms-2" [disabled]="searchForm.invalid">Search</button>
             </div>
           </form>
@@ -108,7 +108,7 @@
           </div>
           </div>
         <div class="card-footer d-flex justify-content-between">
-          <button type="reset" class="btn btn-secondary">Reset</button>
+          <button type="reset" class="btn btn-secondary" (click)="reserForm()">Reset</button>
           <button type="submit" class="btn btn-primary" [disabled]="editInventoryForm.invalid">Submit</button>
           
         </div>

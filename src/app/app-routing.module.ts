@@ -11,6 +11,7 @@ import { IssueInventory2Component } from './issue-inventory2/issue-inventory2.co
 import { ReceiveInventory2Component } from './receive-inventory2/receive-inventory2.component';
 import { AssignmentHistoryComponent } from './assignment-history/assignment-history.component';
 import { UpcomingRetirementsComponent } from './upcoming-retirements/upcoming-retirements.component';
+import { BarcodeComponent } from './barcode/barcode.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
       {path:'assignment-history',component:AssignmentHistoryComponent},
       {path:'inventory-report',component:InventoryReportComponent},
       {path:'upcoming-retirements',component:UpcomingRetirementsComponent},
+      {path:'barcode',component:BarcodeComponent},
       
     ]     
   },

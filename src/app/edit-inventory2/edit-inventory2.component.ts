@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryService } from '../services/inventory.service';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
   providers: [DatePipe]
 })
 
-export class EditInventory2Component implements OnInit {
+export class EditInventory2Component implements OnInit, AfterViewInit {
   editForm: boolean = false
   inventoryId: number = 0;
   serialNumber: string = '';
@@ -24,6 +24,7 @@ export class EditInventory2Component implements OnInit {
   subcategories: string[] = [];
   itemCondition: string[] = [];
   statusLov: string[] = [];
+  @ViewChild('barcodeInput') barcodeInput!: ElementRef;
   constructor(
     private fb: FormBuilder,
     private inventoryService: InventoryService,
@@ -51,6 +52,12 @@ export class EditInventory2Component implements OnInit {
 
   ngOnInit(): void {
     this.getLov();
+  }
+
+
+  ngAfterViewInit(): void {
+    // Automatically focus the input field when the component is initialized
+    this.barcodeInput.nativeElement.focus();
   }
   getLov() {
     this.inventoryService.getItemConditionLov().subscribe({
@@ -87,52 +94,58 @@ export class EditInventory2Component implements OnInit {
 
   }
   searchInventory(): void {
-    this.inventoryService.getInventoryBySerialNumber(this.searchForm.value.serialNumber).subscribe({
-      next: (result: any) => {
-        if (result) {
-          //this.inventoryItem = result[0];
-          this.editForm = true
-          console.warn("search result =", result);
-          this.inventoryId = result[0].id;
-          this.editInventoryForm.patchValue(result[0]);
-          // Patch category and trigger onCategoryChange
-          this.editInventoryForm.controls['category'].patchValue(result[0].category);
-          const simulatedEvent = { target: { value: result[0].category } } as unknown as Event;
-          this.onCategoryChange(simulatedEvent);
-          // Patch sub_category only after subcategories are updated
-          setTimeout(() => {
-            this.editInventoryForm.controls['sub_category'].patchValue(result[0].sub_category);
-          }, 50);
-
-
-          // Handle receipt_date and warranty_expiration patching (extract only the date)
-          const warranty_expiration = result[0].warranty_expiration.split('T')[0]; // Extract 'yyyy-MM-dd'
-          const receipt_date = this.datePipe.transform(result[0].receipt_date, 'yyyy-MM-dd')
-
-          // Patch the date values into the form controls
-          this.editInventoryForm.controls['receipt_date'].patchValue(receipt_date);
-          this.editInventoryForm.controls['warranty_expiration'].patchValue(warranty_expiration);
-          console.log("Subcategories loaded:", this.subcategories);
-          this.errorMessage = '';
-        } else {
-          this.errorMessage = 'No inventory item found with this serial number.';
-          this.editForm = false;
-          // this.inventoryItem = null;
+    const serialNumber = this.searchForm.value.serialNumber;
+    if (serialNumber.trim()){
+      this.inventoryService.getInventoryBySerialNumber(serialNumber).subscribe({
+        next: (result: any) => {
+          if (result) {
+            //this.inventoryItem = result[0];
+            this.editForm = true
+            console.warn("search result =", result);
+            this.inventoryId = result[0].id;
+            this.editInventoryForm.patchValue(result[0]);
+            // Patch category and trigger onCategoryChange
+            this.editInventoryForm.controls['category'].patchValue(result[0].category);
+            const simulatedEvent = { target: { value: result[0].category } } as unknown as Event;
+            this.onCategoryChange(simulatedEvent);
+            // Patch sub_category only after subcategories are updated
+            setTimeout(() => {
+              this.editInventoryForm.controls['sub_category'].patchValue(result[0].sub_category);
+            }, 50);
+  
+  
+            // Handle receipt_date and warranty_expiration patching (extract only the date)
+            const warranty_expiration = result[0].warranty_expiration.split('T')[0]; // Extract 'yyyy-MM-dd'
+            const receipt_date = this.datePipe.transform(result[0].receipt_date, 'yyyy-MM-dd')
+  
+            // Patch the date values into the form controls
+            this.editInventoryForm.controls['receipt_date'].patchValue(receipt_date);
+            this.editInventoryForm.controls['warranty_expiration'].patchValue(warranty_expiration);
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = 'No inventory item found with this serial number.';
+            this.editForm = false;
+            // this.inventoryItem = null;
+          }
+        },
+        error: (error) => {
+         // this.errorMessage = error.message;
+          alert(error.message);
         }
-      },
-      error: (error) => {
-       // this.errorMessage = error.message;
-        alert(error.message);
-      }
-    });
+      });
+     }else {
+      this.errorMessage = 'Please enter a valid serial number.';
+    }
+ // Reset the form after searching and focus back on the input field
+ this.searchForm.reset();
+ this.barcodeInput.nativeElement.focus();
   }
 
   getSubcategoryLov(category:string){
     this.inventoryService.getSubCategoryLov(category).subscribe({
       next: (result: any) => {
         this.subcategories=result.subcategory_list
-        console.warn("subcategory lov: ",this.subcategories);
-      },
+        },
       error: (error) => {
         this.errorMessage=error.message;
        }     
@@ -167,10 +180,10 @@ export class EditInventory2Component implements OnInit {
     }
   }
 
-  onCancle(): void {
-    this.editForm = false;
-    //  this.inventoryItem='';
-    this.route.navigate(['/home/edit-inventory']);
+  reserForm(): void {
+    this.searchForm.reset();
+    this.editInventoryForm.reset();
+    this.barcodeInput.nativeElement.focus();
   }
 
 

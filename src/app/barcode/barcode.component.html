@@ -1,1 +1,25 @@
 
+<!-- <div class="card-header text-center">
+    <form [formGroup]="searchForm" (ngSubmit)="searchInventory()">
+      <h4>Issue Inventory Form</h4>
+      <div class="d-flex justify-content-center">
+        <input type="text" id="serialNumber" class="form-control custom-input-width" formControlName="serialNumber" required >
+        <button type="submit" class="btn btn-primary ms-2" [disabled]="searchForm.invalid">Search</button>
+      </div>
+      <div><p *ngIf="errorMessage">{{errorMessage}}</p></div>
+    </form>
+  </div>
+  <br>
+ <p>{{item}}</p>  -->
+ <div class="card-header text-center">
+    <form [formGroup]="searchForm" (ngSubmit)="searchInventory()">
+      <h4>Issue Inventory Form</h4>
+      <div class="d-flex justify-content-center">
+        <input type="text" id="serialNumber" class="form-control custom-input-width" formControlName="serialNumber" required (keydown.enter)="searchInventory()" #barcodeInput>
+        <button type="submit" class="btn btn-primary ms-2" [disabled]="searchForm.invalid">Search</button>
+      </div>
+      <div><p *ngIf="errorMessage">{{errorMessage}}</p></div>
+    </form>
+</div>
+<br>
+<p>{{item}}</p>
