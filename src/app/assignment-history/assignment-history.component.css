@@ -7,7 +7,7 @@
 
 .custom-thead th {
   font-weight: bold !important;  /* Make the headers bold */
-} */
+} 
 /* Custom table wrapper for responsiveness */
 .custom-table-responsive {
   overflow-x: auto;
